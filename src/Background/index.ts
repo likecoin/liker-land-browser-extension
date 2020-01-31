@@ -1,10 +1,14 @@
 import { browser } from 'webextension-polyfill-ts';
 import * as api from '../utils/api/likerland';
+import {
+  addBookMark,
+  removeBookMark,
+  isBookMarked,
+} from './bookmarks';
 
 let isLoggedIn = false;
 
 let loginTabId: number | undefined = 0;
-const bookmarks = new Set();
 
 async function checkLoginStatus() {
   isLoggedIn = false
@@ -21,16 +25,6 @@ function handleLikerLandLogin(tabId: number, changeInfo: any) {
   }
 }
 
-async function addBookMark(url: string) {
-  await api.addBookmark(url);
-  bookmarks.add(encodeURIComponent(url));
-}
-
-async function removeBookMark(url: string) {
-  await api.removeBookmark(url);
-  bookmarks.delete(encodeURIComponent(url));
-}
-
 async function handleBookMark() {
   const [currentTab] = await browser.tabs.query({ active: true, lastFocusedWindow: true, currentWindow: true});
   const currentURL = currentTab && currentTab.url;
@@ -39,7 +33,7 @@ async function handleBookMark() {
     console.error(currentTab);
     return;
   }
-  if (bookmarks.has(encodeURIComponent(currentURL))) {
+  if (isBookMarked(currentURL)) {
     await removeBookMark(currentURL);
   } else {
     await addBookMark(currentURL);
