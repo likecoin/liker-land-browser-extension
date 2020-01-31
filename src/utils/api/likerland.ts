@@ -12,9 +12,9 @@ const api = axios.create({
 
 export const getAppURL = () => 'https://likecoin.page.link/likeco';
 
-export async function refreshBookmarkList() {
-  const { bookmarks } = await api.get('/reader/bookmark');
-  return bookmarks;
+export async function refreshBookmarkList() : Promise<string[]> {
+  const { data } = await api.get('/reader/bookmark');
+  return data?.bookmarks || [];
 }
 
 export async function addBookmark(url: string) {

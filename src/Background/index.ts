@@ -1,6 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 import * as api from '../utils/api/likerland';
 import {
+  refreshBookmark,
   addBookMark,
   removeBookMark,
   isBookMarked,
@@ -13,7 +14,11 @@ let loginTabId: number | undefined = 0;
 async function checkLoginStatus() {
   isLoggedIn = false
   const { data: user } = await api.getLoginStatus();
-  if (user) isLoggedIn = true;
+  if (user) {
+    isLoggedIn = true;
+    await refreshBookmark();
+    await updateBookmarkIcon();
+  }
 }
 
 function handleLikerLandLogin(tabId: number, changeInfo: any) {
