@@ -32,7 +32,6 @@ const manifestInput = {
     __opera__minimum_opera_version: '36',
 
     browser_action: {
-        default_popup: 'popup.html',
         default_icon: {
             '16': 'assets/icons/favicon-16.png',
             '32': 'assets/icons/favicon-32.png',
