@@ -14,6 +14,7 @@ let loginTabId: number | undefined = 0;
 
 async function getCurrentTabURL() {
   const [currentTab] = await browser.tabs.query({ active: true, lastFocusedWindow: true, currentWindow: true});
+  // TODO: handle canonical url and url qs cleaning
   const currentURL = currentTab && currentTab.url;
   if (!currentURL) {
     console.error('no url');
@@ -85,6 +86,8 @@ browser.runtime.onInstalled.addListener(async (): Promise<void> => {
 browser.runtime.onStartup.addListener(async (): Promise<void>  => {
   await checkLoginStatus();
 });
+
+// TODO: handle new tab
 
 browser.tabs.onActivated.addListener(async (activeInfo) => {
     const currentTab = await browser.tabs.get(activeInfo.tabId);
