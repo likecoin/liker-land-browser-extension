@@ -9,9 +9,10 @@ const logoutURL = `${LIKER_LAND_URL}/logout`;
 const background = browser.extension.getBackgroundPage();
 
 class Options extends React.Component {
-  handleLogout(e) {
+  handleLogout(e: React.MouseEvent) {
     e.preventDefault();
-    background.logout();
+    // TODO: add type definition
+    (background as any).logout();
   }
   render() {
     return (

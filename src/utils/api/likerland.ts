@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-import {
-  LIKER_LAND_API_BASE,
-} from '../../constant';
+import { LIKER_LAND_API_BASE } from '../../constant';
 
 const api = axios.create({
   baseURL: LIKER_LAND_API_BASE,
@@ -10,9 +8,11 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export const getAppURL = () => 'https://likecoin.page.link/likeco';
+export const getAppURL = () => {
+  return 'https://likecoin.page.link/likeco';
+};
 
-export async function refreshBookmarkList() : Promise<string[]> {
+export async function refreshBookmarkList(): Promise<string[]> {
   const { data } = await api.get('/reader/bookmark');
   return data?.bookmarks || [];
 }
@@ -33,4 +33,6 @@ export function logout() {
   return api.post(`/users/logout`);
 }
 
-export const getOAuthLoginAPI = () => `${LIKER_LAND_API_BASE}/users/login`;
+export const getOAuthLoginAPI = () => {
+  return `${LIKER_LAND_API_BASE}/users/login`;
+};

@@ -4,7 +4,11 @@ let bookmarks = new Set();
 
 export async function refreshBookmark() {
   const newBookmarks = await api.refreshBookmarkList();
-  bookmarks = new Set(newBookmarks.map((url: string) => encodeURIComponent(url)));
+  bookmarks = new Set(
+    newBookmarks.map((url: string) => {
+      return encodeURIComponent(url);
+    })
+  );
 }
 
 export async function addBookMark(url: string) {
