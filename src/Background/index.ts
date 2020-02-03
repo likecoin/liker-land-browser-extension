@@ -10,6 +10,7 @@ import {
 let isLoggedIn = false;
 
 let loginTabId: number | undefined = 0;
+let activeTabId: number | undefined = 0;
 
 
 async function getCurrentTabURL() {
@@ -25,6 +26,7 @@ async function getCurrentTabURL() {
 }
 
 async function updateBookmarkIcon(url?: string) {
+  if (!isLoggedIn) return; // do not change icon if not logged in
   let currentURL = url;
   if (!url) {
     currentURL = await getCurrentTabURL();
@@ -52,7 +54,6 @@ async function checkLoginStatus() {
 }
 
 function handleLikerLandLogin(tabId: number, changeInfo: any) {
-  console.log(changeInfo);
   if (loginTabId === tabId && changeInfo && changeInfo.url) {
     isLoggedIn = changeInfo.url.includes('liker.land/following');
     if (isLoggedIn) {
@@ -87,9 +88,14 @@ browser.runtime.onStartup.addListener(async (): Promise<void>  => {
   await checkLoginStatus();
 });
 
-// TODO: handle new tab
+browser.tabs.onUpdated.addListener((tabId: number, changeInfo: any) => {
+  if (activeTabId && tabId === activeTabId && changeInfo.status === 'loading') {
+      updateBookmarkIcon(changeInfo.url);
+  }
+});
 
 browser.tabs.onActivated.addListener(async (activeInfo) => {
+    activeTabId = activeInfo.tabId;
     const currentTab = await browser.tabs.get(activeInfo.tabId);
     const currentURL = currentTab && currentTab.url;
     updateBookmarkIcon(currentURL)
