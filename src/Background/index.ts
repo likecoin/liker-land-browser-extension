@@ -62,12 +62,21 @@ function handleLikerLandLogin(tabId: number, changeInfo: any) {
   }
 }
 
-async function doLoginViaLikerLand() {
+async function loginViaLikerLand() {
   const tab = await browser.tabs.create({ url: api.getOAuthLoginAPI() });
   loginTabId = tab.id;
   if (!browser.tabs.onUpdated.hasListener(handleLikerLandLogin)) {
     browser.tabs.onUpdated.addListener(handleLikerLandLogin);
   }
+}
+
+async function logout() {
+  try {
+    await api.logout();
+  } catch (err) {
+    if (err?.response?.status !== 404) console.error(err);
+  }
+  await checkLoginStatus();
 }
 
 async function toggleBookMark() {
@@ -103,8 +112,14 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
 
 browser.browserAction.onClicked.addListener(async () => {
   if (!isLoggedIn) {
-    await doLoginViaLikerLand();
+    await loginViaLikerLand();
   } else {
     await toggleBookMark();
   }
 });
+
+function exposeFunctions() {
+  // allow window.<function> access from option page
+  (<any>window).logout = logout;
+}
+exposeFunctions();
