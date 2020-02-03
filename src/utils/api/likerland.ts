@@ -17,20 +17,20 @@ export async function refreshBookmarkList() : Promise<string[]> {
   return data?.bookmarks || [];
 }
 
-export async function addBookmark(url: string) {
-  await api.post(`/reader/bookmark?url=${encodeURIComponent(url)}`);
+export function addBookmark(url: string) {
+  return api.post(`/reader/bookmark?url=${encodeURIComponent(url)}`);
 }
 
-export async function removeBookmark(url: string) {
-  await api.delete(`/reader/bookmark?url=${encodeURIComponent(url)}`);
+export function removeBookmark(url: string) {
+  return api.delete(`/reader/bookmark?url=${encodeURIComponent(url)}`);
 }
 
-export async function getLoginStatus() {
-  return await api.get(`/users/self`);
+export function getLoginStatus() {
+  return api.get(`/users/self`);
 }
 
-export async function logout() {
-  await api.post(`/users/logout`);
+export function logout() {
+  return api.post(`/users/logout`);
 }
 
 export const getOAuthLoginAPI = () => `${LIKER_LAND_API_BASE}/users/login`;

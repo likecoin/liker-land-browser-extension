@@ -42,7 +42,12 @@ async function updateBookmarkIcon(url?: string) {
 
 async function checkLoginStatus() {
   isLoggedIn = false
-  const { data: user } = await api.getLoginStatus();
+  let user;
+  try {
+    ({ data: user } = await api.getLoginStatus());
+  } catch (err) {
+    if (err?.response?.status !== 404) console.error(err);
+  }
   if (user) {
     isLoggedIn = true;
     await refreshBookmark();
