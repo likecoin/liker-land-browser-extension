@@ -117,7 +117,11 @@ browser.browserAction.onClicked.addListener(async () => {
   if (!isLoggedIn) {
     await loginViaLikerLand();
   } else {
-    await toggleBookmark();
+    try {
+      await toggleBookmark();
+    } catch (err) {
+      console.error(err);
+    }
   }
 });
 
