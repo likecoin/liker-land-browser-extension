@@ -54,8 +54,8 @@ module.exports = {
     entry: {
         background: path.join(sourcePath, 'Background', 'index.ts'),
         contentScript: path.join(sourcePath, 'ContentScript', 'index.ts'),
-        options: path.join(sourcePath, 'Options', 'index.tsx'),
-        styles: [path.join(sourcePath, 'Options', 'options.scss')],
+        options: path.join(sourcePath, 'OptionsPage', 'index.tsx'),
+        styles: [path.join(sourcePath, 'OptionsPage', 'options.scss')],
     },
 
     output: {
