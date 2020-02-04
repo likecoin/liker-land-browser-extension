@@ -16,7 +16,7 @@ const manifestInput = {
     homepage_url: 'https://github.com/likecoin/liker-land-browser-extension',
     short_name: 'Liker Land',
 
-    permissions: ['activeTab', 'tabs', 'storage', 'http://*/*', 'https://*/*'],
+    permissions: ['tabs', 'storage', 'http://*/*', 'https://*/*'],
     content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
     '__chrome|firefox__author': 'William Chong',
