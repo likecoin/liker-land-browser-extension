@@ -1,26 +1,26 @@
 import * as api from '../utils/api/likerland';
 
-let bookmarks = new Set();
+let bookmarks = new Set<string>();
 
 export async function refreshBookmark() {
   const newBookmarks = await api.refreshBookmarkList();
-  bookmarks = new Set(
-    newBookmarks.map((url: string) => {
+  bookmarks = new Set<string>(
+    newBookmarks.map(url => {
       return encodeURIComponent(url);
     })
   );
 }
 
-export async function addBookMark(url: string) {
+export async function addBookmark(url: string) {
   await api.addBookmark(url);
   bookmarks.add(encodeURIComponent(url));
 }
 
-export async function removeBookMark(url: string) {
+export async function removeBookmark(url: string) {
   await api.removeBookmark(url);
   bookmarks.delete(encodeURIComponent(url));
 }
 
-export function isBookMarked(url: string): boolean {
+export function isBookmarked(url: string): boolean {
   return bookmarks.has(encodeURIComponent(url));
 }

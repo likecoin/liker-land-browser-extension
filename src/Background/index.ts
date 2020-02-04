@@ -1,11 +1,11 @@
 import { browser } from 'webextension-polyfill-ts';
 import * as api from '../utils/api/likerland';
-import { refreshBookmark, addBookMark, removeBookMark, isBookMarked } from './bookmarks';
+import { refreshBookmark, addBookmark, removeBookmark, isBookmarked } from './bookmarks';
 
 let isLoggedIn = false;
 
-let loginTabId: number | undefined = 0;
-let activeTabId: number | undefined = 0;
+let loginTabId: number | undefined;
+let activeTabId: number | undefined;
 
 async function getCurrentTabURL() {
   const [currentTab] = await browser.tabs.query({ active: true, lastFocusedWindow: true, currentWindow: true });
@@ -25,7 +25,7 @@ async function updateBookmarkIcon(url?: string) {
   if (!url) {
     currentURL = await getCurrentTabURL();
   }
-  if (currentURL && isBookMarked(currentURL)) {
+  if (currentURL && isBookmarked(currentURL)) {
     browser.browserAction.setIcon({ path: '/assets/icons/bookmark-48.png' });
     browser.browserAction.setTitle({ title: 'Unbookmark' });
   } else {
@@ -78,13 +78,13 @@ async function logout() {
   await checkLoginStatus();
 }
 
-async function toggleBookMark() {
+async function toggleBookmark() {
   const currentURL = await getCurrentTabURL();
   if (!currentURL) return;
-  if (isBookMarked(currentURL)) {
-    await removeBookMark(currentURL);
+  if (isBookmarked(currentURL)) {
+    await removeBookmark(currentURL);
   } else {
-    await addBookMark(currentURL);
+    await addBookmark(currentURL);
   }
   updateBookmarkIcon(currentURL);
 }
@@ -101,7 +101,7 @@ browser.runtime.onStartup.addListener(
 );
 
 browser.tabs.onUpdated.addListener((tabId: number, changeInfo: any) => {
-  if (activeTabId && tabId === activeTabId && changeInfo.status === 'loading') {
+  if (activeTabId !== undefined && tabId === activeTabId && changeInfo.status === 'loading') {
     updateBookmarkIcon(changeInfo.url);
   }
 });
@@ -117,7 +117,7 @@ browser.browserAction.onClicked.addListener(async () => {
   if (!isLoggedIn) {
     await loginViaLikerLand();
   } else {
-    await toggleBookMark();
+    await toggleBookmark();
   }
 });
 
