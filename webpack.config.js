@@ -29,7 +29,7 @@ const extensionReloaderPlugin =
                   // TODO: reload manifest on update
                   contentScript: 'contentScript',
                   background: 'background',
-                  extensionPage: ['popup', 'options'],
+                  extensionPage: ['options'],
               },
           })
         : () => {
@@ -54,9 +54,8 @@ module.exports = {
     entry: {
         background: path.join(sourcePath, 'Background', 'index.ts'),
         contentScript: path.join(sourcePath, 'ContentScript', 'index.ts'),
-        popup: path.join(sourcePath, 'Popup', 'index.tsx'),
-        options: path.join(sourcePath, 'Options', 'index.tsx'),
-        styles: [path.join(sourcePath, 'Popup', 'popup.scss'), path.join(sourcePath, 'Options', 'options.scss')],
+        options: path.join(sourcePath, 'OptionsPage', 'index.tsx'),
+        styles: [path.join(sourcePath, 'OptionsPage', 'options.scss')],
     },
 
     output: {
@@ -116,7 +115,7 @@ module.exports = {
         new CheckerPlugin(),
         // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/518
         new FixStyleOnlyEntriesPlugin({ silent: true }),
-        new webpack.EnvironmentPlugin(['NODE_ENV', 'TARGET_BROWSER']),
+        new webpack.EnvironmentPlugin(['NODE_ENV', 'TARGET_BROWSER', 'IS_TESTNET']),
         // delete previous build files
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: [
@@ -125,12 +124,6 @@ module.exports = {
             ],
             cleanStaleWebpackAssets: false,
             verbose: true,
-        }),
-        new HtmlWebpackPlugin({
-            template: path.join(viewsPath, 'popup.html'),
-            inject: 'body',
-            chunks: ['popup'],
-            filename: 'popup.html',
         }),
         new HtmlWebpackPlugin({
             template: path.join(viewsPath, 'options.html'),

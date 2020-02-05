@@ -2,7 +2,7 @@ const pkg = require('../../package.json');
 
 const manifestInput = {
     manifest_version: 2,
-    name: 'Sample WebExtension',
+    name: 'Liker Land',
     version: pkg.version,
 
     icons: {
@@ -12,16 +12,16 @@ const manifestInput = {
         '128': 'assets/icons/favicon-128.png',
     },
 
-    description: 'Sample description',
-    homepage_url: 'https://github.com/abhijithvijayan/web-extension-starter',
-    short_name: 'Sample Name',
+    description: 'Browser extension for liker.land',
+    homepage_url: 'https://github.com/likecoin/liker-land-browser-extension',
+    short_name: 'Liker Land',
 
-    permissions: ['activeTab', 'storage', 'http://*/*', 'https://*/*'],
+    permissions: ['tabs', 'storage', 'http://*/*', 'https://*/*'],
     content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
-    '__chrome|firefox__author': 'abhijithvijayan',
+    '__chrome|firefox__author': 'William Chong',
     __opera__developer: {
-        name: 'abhijithvijayan',
+        name: 'William Chong',
     },
 
     __firefox__applications: {
@@ -32,14 +32,13 @@ const manifestInput = {
     __opera__minimum_opera_version: '36',
 
     browser_action: {
-        default_popup: 'popup.html',
         default_icon: {
             '16': 'assets/icons/favicon-16.png',
             '32': 'assets/icons/favicon-32.png',
             '48': 'assets/icons/favicon-48.png',
             '128': 'assets/icons/favicon-128.png',
         },
-        default_title: 'tiny title',
+        default_title: 'Login to liker.land',
         '__chrome|opera__chrome_style': false,
         __firefox__browser_style: false,
     },
