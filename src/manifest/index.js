@@ -13,15 +13,15 @@ const manifestInput = {
     },
 
     description: 'Browser extension for liker.land',
-    homepage_url: 'https://github.com/likecoin/liker-land-browser-extension',
+    homepage_url: 'https://liker.land',
     short_name: 'Liker Land',
 
     permissions: ['tabs', 'storage', 'http://*/*', 'https://*/*'],
     content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
-    '__chrome|firefox__author': 'William Chong',
+    '__chrome|firefox__author': 'Republic of Liker Land',
     __opera__developer: {
-        name: 'William Chong',
+        name: 'Republic of Liker Land',
     },
 
     __firefox__applications: {

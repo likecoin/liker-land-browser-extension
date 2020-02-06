@@ -1,11 +1,10 @@
 {
-  "name": "web-extension-starter",
-  "version": "2.0.0",
-  "description": "Web extension starter using react and typescript",
-  "private": true,
-  "repository": "https://github.com/abhijithvijayan/web-extension-starter.git",
-  "author": "abhijithvijayan <34790378+abhijithvijayan@users.noreply.github.com>",
-  "license": "MIT",
+  "name": "liker-land-browser-extension",
+  "version": "0.0.1",
+  "description": "Browser extension for Liker Land",
+  "repository": "https://github.com/likecoin/liker-land-browser-extension",
+  "author": "William Chong <williamchong@like.co>",
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=8 <=12",
     "yarn": ">= 1.0.0"
