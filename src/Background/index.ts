@@ -114,6 +114,8 @@ browser.tabs.onActivated.addListener(async activeInfo => {
 });
 
 browser.browserAction.onClicked.addListener(async () => {
+  /* try to refresh login status first due to persistent: off */
+  if (!isLoggedIn) await checkLoginStatus();
   if (!isLoggedIn) {
     await loginViaLikerLand();
   } else {
