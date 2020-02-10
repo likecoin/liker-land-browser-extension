@@ -1,23 +1,11 @@
-<h1 align="center">🚀 web-extension-starter</h1>
-<h2 align="center">TypeScript + React Version</h2>
-<p align="center">Web Extension starter to build "Write Once Run on Any Browser" extension</p>
-<h3 align="center">🙋‍♂️ Made by <a href="https://twitter.com/_abhijithv">@abhijithvijayan</a></h3>
+# Liker Land Browser Extension
 
-<br />
-
-👶🏼 Looking for [Non React/TypeScript Version](https://github.com/abhijithvijayan/web-extension-starter/tree/master) instead?
+Integrate [Liker Land](https://liker.land) functionality into your favorite browsers.
 
 ## Features
 
-- Cross Browser Support (Web-Extensions API)
-- Browser Taylored Manifest generation
-- Automatic build on code changes
-- Auto packs browser specific build files
-- SASS styling
-- TypeScript by default
-- ES6 modules support
-- React UI Library by default
-- Smart reload
+- Bookmark any URL into Liker Land reading list
+- (TODO)
 
 ## Browser Support
 
@@ -25,17 +13,6 @@
 ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 49 & later ✔ | 52 & later ✔ | 36 & later ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔
-
-## Demo
-
-- [abhijithvijayan/kutt-extension](https://github.com/abhijithvijayan/kutt-extension)
-
-## Use this template
-
-Create a new directory and run
-```
-curl -fsSL https://github.com/abhijithvijayan/web-extension-starter/archive/react-typescript.tar.gz | tar -xz --strip-components=1
-```
 
 ## 🚀 Quick Start
 
@@ -48,48 +25,7 @@ curl -fsSL https://github.com/abhijithvijayan/web-extension-starter/archive/reac
 - `yarn run build:opera` to build opera extension.
 - `yarn run build` builds and packs extensions all at once to extension/ directory.
 
-## Usage
-
-Update `src/manifest/index.js` file with browser vendor prefixed manifest keys
-
-```js
-{
-  "__chrome__name": "SuperChrome",
-  "__firefox__name": "SuperFox",
-  "__edge__name": "SuperEdge",
-  "__opera__name": "SuperOpera"
-}
-```
-
-if the vendor is `chrome` this compiles to:
-
-```js
-{
-  "name": "SuperChrome",
-}
-```
-
----
-
-Add keys to multiple vendors by seperating them with | in the prefix
-
-```
-{
-  __chrome|opera__name: "SuperBlink"
-}
-```
-
-if the vendor is `chrome` or `opera`, this compiles to:
-
-```
-{
-  "name": "SuperBlink"
-}
-```
-
-See the original [README](https://github.com/abhijithvijayan/wext-manifest) of wext-manifest package for more details
-
-### Development
+## Development
 
 - `yarn install` to install dependencies.
 - To watch file changes in developement
@@ -124,10 +60,10 @@ See the original [README](https://github.com/abhijithvijayan/wext-manifest) of w
 
 - `yarn run build` builds the extension for all the browsers to `extension/BROWSER` directory respectively.
 
-## Show your support
+## Credit
 
-Give a ⭐️ if this project helped you!
+Original [template](https://github.com/abhijithvijayan/web-extension-starter/) made by [@abhijithvijayan](https://twitter.com/_abhijithv)
 
 ## Licence
 
-Code released under the [MIT License](LICENSE).
+Code released under the [GPLv3](LICENSE), original template released under MIT License.
