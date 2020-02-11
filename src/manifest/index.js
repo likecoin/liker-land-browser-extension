@@ -24,6 +24,10 @@ const manifestInput = {
         name: 'Republic of Liker Land',
     },
 
+    __firefox__applications: {
+        gecko: { id: '{017584ac-81f4-4868-98c5-66f8e26f25d5}' },
+    },
+
     __chrome__minimum_chrome_version: '49',
     __opera__minimum_opera_version: '36',
 
