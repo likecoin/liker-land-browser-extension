@@ -1,6 +1,6 @@
 {
   "name": "liker-land-browser-extension",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Browser extension for Liker Land",
   "repository": "https://github.com/likecoin/liker-land-browser-extension",
   "author": "William Chong <williamchong@like.co>",
