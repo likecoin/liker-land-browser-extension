@@ -19,19 +19,23 @@ async function getCurrentTabURL() {
   return currentURL;
 }
 
+function setBookmarkedIcon(isBookmarkedIcon: boolean) {
+  if (isBookmarkedIcon) {
+    browser.browserAction.setIcon({ path: '/assets/icons/bookmarked.png' });
+    browser.browserAction.setTitle({ title: 'Unbookmark' });
+  } else {
+    browser.browserAction.setIcon({ path: '/assets/icons/normal.png' });
+    browser.browserAction.setTitle({ title: 'Bookmark' });
+  }
+}
+
 async function updateBookmarkIcon(url?: string) {
   if (!isLoggedIn) return; // do not change icon if not logged in
   let currentURL = url;
   if (!url) {
     currentURL = await getCurrentTabURL();
   }
-  if (currentURL && isBookmarked(currentURL)) {
-    browser.browserAction.setIcon({ path: '/assets/icons/bookmark-48.png' });
-    browser.browserAction.setTitle({ title: 'Unbookmark' });
-  } else {
-    browser.browserAction.setIcon({ path: '/assets/icons/bookmark_border-48.png' });
-    browser.browserAction.setTitle({ title: 'Bookmark' });
-  }
+  setBookmarkedIcon(!!currentURL && isBookmarked(currentURL));
 }
 
 async function checkLoginStatus() {
