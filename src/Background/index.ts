@@ -86,11 +86,12 @@ async function toggleBookmark() {
   const currentURL = await getCurrentTabURL();
   if (!currentURL) return;
   if (isBookmarked(currentURL)) {
+    setBookmarkedIcon(false);
     await removeBookmark(currentURL);
   } else {
+    setBookmarkedIcon(true);
     await addBookmark(currentURL);
   }
-  updateBookmarkIcon(currentURL);
 }
 
 browser.runtime.onInstalled.addListener(
