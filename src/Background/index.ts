@@ -5,7 +5,6 @@ import { refreshBookmark, addBookmark, removeBookmark, isBookmarked } from './bo
 let isLoggedIn = false;
 
 let loginTabId: number | undefined;
-let activeTabId: number | undefined;
 
 async function getCurrentTabURL() {
   const [currentTab] = await browser.tabs.query({ active: true, lastFocusedWindow: true, currentWindow: true });
@@ -104,17 +103,16 @@ browser.runtime.onStartup.addListener(
   }
 );
 
-browser.tabs.onUpdated.addListener((tabId: number, changeInfo: any) => {
-  if (activeTabId !== undefined && tabId === activeTabId && changeInfo.status === 'loading') {
-    updateBookmarkIcon(changeInfo.url);
-  }
+browser.tabs.onUpdated.addListener(() => {
+  updateBookmarkIcon();
 });
-
 browser.tabs.onActivated.addListener(async activeInfo => {
-  activeTabId = activeInfo.tabId;
   const currentTab = await browser.tabs.get(activeInfo.tabId);
   const currentURL = currentTab && currentTab.url;
   updateBookmarkIcon(currentURL);
+});
+browser.windows.onFocusChanged.addListener(() => {
+  updateBookmarkIcon();
 });
 
 browser.browserAction.onClicked.addListener(async () => {
