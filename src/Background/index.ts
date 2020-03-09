@@ -82,8 +82,7 @@ async function logout() {
   await checkLoginStatus();
 }
 
-async function toggleBookmark() {
-  const currentURL = await getCurrentTabURL();
+async function toggleBookmark(currentURL: string) {
   if (!currentURL) return;
   if (isBookmarked(currentURL)) {
     setBookmarkedIcon(false);
@@ -119,13 +118,14 @@ browser.tabs.onActivated.addListener(async activeInfo => {
 });
 
 browser.browserAction.onClicked.addListener(async () => {
+  const currentURL = await getCurrentTabURL();
   /* try to refresh login status first due to persistent: off */
   if (!isLoggedIn) await checkLoginStatus();
   if (!isLoggedIn) {
     await loginViaLikerLand();
   } else {
     try {
-      await toggleBookmark();
+      await toggleBookmark(currentURL);
     } catch (err) {
       console.error(err);
     }
