@@ -6,6 +6,8 @@ let isLoggedIn = false;
 
 let loginTabId: number | undefined;
 
+const isCSPDisabled = true;
+
 async function getCurrentTabURL() {
   const [currentTab] = await browser.tabs.query({ active: true, lastFocusedWindow: true, currentWindow: true });
   // TODO: handle canonical url and url qs cleaning
@@ -17,6 +19,32 @@ async function getCurrentTabURL() {
   }
   return currentURL;
 }
+const onHeadersReceived = function(details) {
+  if (!isCSPDisabled) return;
+
+  for (let i = 0; i < details.responseHeaders.length; i++)
+    if (details.responseHeaders[i].name.toLowerCase() === 'content-security-policy')
+      details.responseHeaders[i].value = '';
+
+  return {
+    responseHeaders: details.responseHeaders,
+  };
+};
+
+// const updateUI = function() {
+//   const iconName = isCSPDisabled ? "on" : "off"
+//   const title = isCSPDisabled ? "disabled" : "enabled"
+
+//   chrome.browserAction.setIcon({ path: "images/icon38-" + iconName + ".png" })
+//   chrome.browserAction.setTitle({ title: "Content-Security-Policy headers are " + title })
+// }
+
+const filter = {
+  urls: ['*://*/*'],
+  types: ['main_frame', 'sub_frame'],
+};
+
+chrome.webRequest.onHeadersReceived.addListener(onHeadersReceived, filter, ['blocking', 'responseHeaders']);
 
 function setBookmarkedIcon(isBookmarkedIcon: boolean) {
   if (isBookmarkedIcon) {
@@ -103,7 +131,14 @@ browser.runtime.onStartup.addListener(
   }
 );
 
-browser.tabs.onUpdated.addListener(() => {
+browser.tabs.onUpdated.addListener((id, info) => {
+  if (info.status === 'complete') {
+    setTimeout(() => {
+      chrome.browsingData.remove({}, { serviceWorkers: true }, () => {
+        return null;
+      });
+    }, 1000);
+  }
   updateBookmarkIcon();
 });
 browser.tabs.onActivated.addListener(async activeInfo => {
@@ -114,8 +149,8 @@ browser.tabs.onActivated.addListener(async activeInfo => {
 browser.windows.onFocusChanged.addListener(() => {
   updateBookmarkIcon();
 });
-
 browser.browserAction.onClicked.addListener(async () => {
+  // isCSPDisabled = !isCSPDisabled;
   const currentURL = await getCurrentTabURL();
   /* try to refresh login status first due to persistent: off */
   if (!isLoggedIn) await checkLoginStatus();
