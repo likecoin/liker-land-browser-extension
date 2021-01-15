@@ -16,7 +16,7 @@ const manifestInput = {
     homepage_url: 'https://liker.land',
     short_name: 'Liker Land',
 
-    permissions: ['tabs', 'storage', 'http://*/*', 'https://*/*'],
+    permissions: ['tabs', 'storage', 'http://*/*', 'https://*/*', 'cookies'],
     content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
     '__chrome|firefox__author': 'Republic of Liker Land',
@@ -62,6 +62,11 @@ const manifestInput = {
             js: ['js/contentScript.bundle.js'],
         },
     ],
+
+    web_accessible_resources: [
+        'js/inpage.bundle.js',
+        'assets/likecoin-button/like-clap.svg',
+    ]
 };
 
 module.exports = manifestInput;
