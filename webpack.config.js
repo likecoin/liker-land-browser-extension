@@ -11,7 +11,7 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const ExtensionReloader = require('webpack-extension-reloader');
 const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
 
-const manifestInput = require('./src/manifest');
+const manifestInput = require('./src/manifest/index');
 
 const viewsPath = path.join(__dirname, 'views');
 const sourcePath = path.join(__dirname, 'src');
@@ -21,135 +21,135 @@ const targetBrowser = process.env.TARGET_BROWSER;
 const manifest = wextManifest[targetBrowser](manifestInput);
 
 const extensionReloaderPlugin =
-    nodeEnv === 'development'
-        ? new ExtensionReloader({
-              port: 9090,
-              reloadPage: true,
-              entries: {
-                  // TODO: reload manifest on update
-                  contentScript: 'contentScript',
-                  background: 'background',
-                  extensionPage: ['options'],
-              },
-          })
-        : () => {
-              this.apply = () => {};
-          };
+  nodeEnv === 'development'
+    ? new ExtensionReloader({
+        port: 9090,
+        reloadPage: true,
+        entries: {
+          // TODO: reload manifest on update
+          contentScript: 'contentScript',
+          background: 'background',
+          extensionPage: ['options'],
+        },
+      })
+    : () => {
+        this.apply = () => {};
+      };
 
 const getExtensionFileType = browser => {
-    if (browser === 'opera') {
-        return 'crx';
-    }
+  if (browser === 'opera') {
+    return 'crx';
+  }
 
-    if (browser === 'firefox') {
-        return 'xpi';
-    }
+  if (browser === 'firefox') {
+    return 'xpi';
+  }
 
-    return 'zip';
+  return 'zip';
 };
 
 module.exports = {
-    mode: nodeEnv,
+  mode: nodeEnv,
 
-    entry: {
-        background: path.join(sourcePath, 'Background', 'index.ts'),
-        contentScript: path.join(sourcePath, 'ContentScript', 'index.ts'),
-        options: path.join(sourcePath, 'OptionsPage', 'index.tsx'),
-        styles: [path.join(sourcePath, 'OptionsPage', 'options.scss')],
+  entry: {
+    background: path.join(sourcePath, 'Background', 'index.ts'),
+    contentScript: path.join(sourcePath, 'ContentScript', 'index.ts'),
+    options: path.join(sourcePath, 'OptionsPage', 'index.tsx'),
+    styles: [path.join(sourcePath, 'OptionsPage', 'options.scss')],
+  },
+
+  output: {
+    filename: 'js/[name].bundle.js',
+    path: path.join(destPath, targetBrowser),
+  },
+
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias: {
+      'webextension-polyfill-ts': path.resolve(path.join(__dirname, 'node_modules', 'webextension-polyfill-ts')),
     },
+  },
 
-    output: {
-        filename: 'js/[name].bundle.js',
-        path: path.join(destPath, targetBrowser),
-    },
-
-    resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json'],
-        alias: {
-            'webextension-polyfill-ts': path.resolve(path.join(__dirname, 'node_modules', 'webextension-polyfill-ts')),
-        },
-    },
-
-    module: {
-        rules: [
-            {
-                test: /\.(js|ts|tsx)?$/,
-                loader: 'awesome-typescript-loader',
-                exclude: /node_modules/,
+  module: {
+    rules: [
+      {
+        test: /\.(js|ts|tsx)?$/,
+        loader: 'awesome-typescript-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].css',
+              context: './src/styles/',
+              outputPath: 'css/',
             },
-            {
-                test: /\.scss$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].css',
-                            context: './src/styles/',
-                            outputPath: 'css/',
-                        },
-                    },
-                    'extract-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true,
-                        },
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            // eslint-disable-next-line global-require
-                            plugins: [require('autoprefixer')()],
-                        },
-                    },
-                    'resolve-url-loader',
-                    'sass-loader',
-                ],
+          },
+          'extract-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
             },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              // eslint-disable-next-line global-require
+              plugins: [require('autoprefixer')()],
+            },
+          },
+          'resolve-url-loader',
+          'sass-loader',
         ],
-    },
-
-    plugins: [
-        // for awesome-typescript-loader
-        new CheckerPlugin(),
-        // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/518
-        new FixStyleOnlyEntriesPlugin({ silent: true }),
-        new webpack.EnvironmentPlugin(['NODE_ENV', 'TARGET_BROWSER', 'IS_TESTNET']),
-        // delete previous build files
-        new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: [
-                path.join(process.cwd(), `extension/${targetBrowser}`),
-                path.join(process.cwd(), `extension/${targetBrowser}.${getExtensionFileType(targetBrowser)}`),
-            ],
-            cleanStaleWebpackAssets: false,
-            verbose: true,
-        }),
-        new HtmlWebpackPlugin({
-            template: path.join(viewsPath, 'options.html'),
-            inject: 'body',
-            chunks: ['options'],
-            filename: 'options.html',
-        }),
-        // copy assets
-        new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
-        // write manifest.json
-        new WriteWebpackPlugin([{ name: manifest.name, data: Buffer.from(manifest.content) }]),
-        // plugin to enable browser reloading in development mode
-        extensionReloaderPlugin,
+      },
     ],
+  },
 
-    optimization: {
-        minimizer: [
-            new TerserPlugin({
-                cache: true,
-                parallel: true,
-            }),
-            new ZipPlugin({
-                path: destPath,
-                extension: `${getExtensionFileType(targetBrowser)}`,
-                filename: `${targetBrowser}`,
-            }),
-        ],
-    },
+  plugins: [
+    // for awesome-typescript-loader
+    new CheckerPlugin(),
+    // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/518
+    new FixStyleOnlyEntriesPlugin({ silent: true }),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'TARGET_BROWSER', 'IS_TESTNET']),
+    // delete previous build files
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [
+        path.join(process.cwd(), `extension/${targetBrowser}`),
+        path.join(process.cwd(), `extension/${targetBrowser}.${getExtensionFileType(targetBrowser)}`),
+      ],
+      cleanStaleWebpackAssets: false,
+      verbose: true,
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(viewsPath, 'options.html'),
+      inject: 'body',
+      chunks: ['options'],
+      filename: 'options.html',
+    }),
+    // copy assets
+    new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
+    // write manifest.json
+    new WriteWebpackPlugin([{ name: manifest.name, data: Buffer.from(manifest.content) }]),
+    // plugin to enable browser reloading in development mode
+    extensionReloaderPlugin,
+  ],
+
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+      }),
+      new ZipPlugin({
+        path: destPath,
+        extension: `${getExtensionFileType(targetBrowser)}`,
+        filename: `${targetBrowser}`,
+      }),
+    ],
+  },
 };
