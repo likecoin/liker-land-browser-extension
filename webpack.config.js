@@ -56,6 +56,7 @@ module.exports = {
     contentScript: path.join(sourcePath, 'ContentScript', 'index.ts'),
     options: path.join(sourcePath, 'OptionsPage', 'index.tsx'),
     styles: [path.join(sourcePath, 'OptionsPage', 'options.scss')],
+    inpage: path.join(sourcePath, 'ContentScript', 'inpage.ts'),
   },
 
   output: {

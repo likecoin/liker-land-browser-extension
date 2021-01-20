@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
+// import pageInjector from '../index';
 
 const IDENTIFIER = 'liker-land-extension';
-
 /*
   get message from  content scripts,use only nid to proxy request to server
 */

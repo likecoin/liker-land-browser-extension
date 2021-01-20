@@ -1,6 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 import * as api from '../utils/api/likerland';
 import { refreshBookmark, addBookmark, removeBookmark, isBookmarked } from './bookmarks';
+import eventCenter from './event-center/index';
 
 let isLoggedIn = false;
 
@@ -104,6 +105,7 @@ browser.runtime.onStartup.addListener(
 );
 
 browser.tabs.onUpdated.addListener(() => {
+  eventCenter.sendPortMessage('pageLoad', 'pageLoad');
   updateBookmarkIcon();
 });
 browser.tabs.onActivated.addListener(async activeInfo => {
