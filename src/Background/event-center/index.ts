@@ -27,11 +27,15 @@ class EventCenter {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private onPortMessage(e: { type: string; data: any }) {
-    console.log('e', e);
     if (!this.portFromCs) return;
     browser.tabs.onUpdated.addListener(() => {
       this.sendPortMessage('pageLoad', 'pageLoad');
     });
+    if (e.type === 'checkLikerId') {
+      Api.checkLikerId(e.data.content).then(res => {
+        this.sendPortMessage(e.data?.nid, res);
+      });
+    }
     if (e.type === 'social') {
       Api.getSoicalUrl(e.data.content).then(res => {
         this.sendPortMessage(e.data?.nid, res);

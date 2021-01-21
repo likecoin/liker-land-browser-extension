@@ -16,6 +16,16 @@ const soicalApi = axios.create({
 });
 
 const Api = {
+  checkLikerId: (likerID: string) => {
+    return api
+      .get(`/${window.encodeURIComponent(likerID)}`)
+      .then(res => {
+        return res;
+      })
+      .catch((reason: AxiosError) => {
+        return reason;
+      });
+  },
   selfLikesRequest: (content: { likerID: any; postURL: any }) => {
     return api.get(`/api/like/likebutton/${content.likerID}/self?referrer=${content.postURL}`).then(res => {
       return res.data;
