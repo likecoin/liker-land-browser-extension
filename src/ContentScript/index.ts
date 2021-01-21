@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { browser } from 'webextension-polyfill-ts';
-import {debounce} from 'lodash';
+import { debounce } from 'lodash';
 // import content connector to get message
 import contentConnector from './event-center/content-connector';
 

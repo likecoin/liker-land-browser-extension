@@ -7,10 +7,6 @@ import eventCenter from '../event-center/index';
 class YoutubePlugin {
   youtubeStyle!: HTMLElement;
 
-  // eslint-disable-next-line no-useless-constructor
-  constructor() {
-  }
-
   insertStyle() {
     this.youtubeStyle = document.createElement('style');
     this.youtubeStyle.innerHTML = `
