@@ -104,13 +104,16 @@ browser.runtime.onStartup.addListener(
   }
 );
 
-browser.tabs.onUpdated.addListener(() => {
-  eventCenter.sendPortMessage('pageLoad', 'pageLoad');
+browser.tabs.onUpdated.addListener(async id => {
+  const currentTab = await browser.tabs.get(id);
+  const currentURL = currentTab && currentTab.url;
+  eventCenter.sendPortMessage('pageLoad', currentURL);
   updateBookmarkIcon();
 });
 browser.tabs.onActivated.addListener(async activeInfo => {
   const currentTab = await browser.tabs.get(activeInfo.tabId);
   const currentURL = currentTab && currentTab.url;
+  eventCenter.sendPortMessage('pageLoad', currentURL);
   updateBookmarkIcon(currentURL);
 });
 browser.windows.onFocusChanged.addListener(() => {

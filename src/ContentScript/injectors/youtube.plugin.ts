@@ -14,6 +14,38 @@ class YoutubePlugin {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+                // border-bottom: 1px solid var(--yt-spec-10-percent-layer);
+              }
+              .button-conatiner {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: flex-end;
+                height: 100%;
+                width: 47%;
+                margin-left: 20px;
+                text-align:left;
+                border-left: 1px solid var(--yt-spec-10-percent-layer);
+                padding-left: 14px;
+              }
+              .button-conatiner a{
+              }
+              .liker-tips{
+                text-align: left;
+                z-index: 10;
+              }
+              .liker-tips-title{
+                cursor: pointer;
+                -webkit-transition: opacity,color .2s ease-in-out;
+                transition: opacity,color .2s ease-in-out;
+                color: #28646e;
+                font-size: 16px;
+                line-height: 1.5em;
+                font-weight: 600;
+              }
+              .liker-tips-content{
+                color: #4a4a4a;
+                font-size: 12px;
               }
           `;
     document.body.appendChild(this.youtubeStyle);
@@ -36,6 +68,8 @@ class YoutubePlugin {
       } else {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         eventCenter.sendMessage('checkLikerId', id, (res: any) => {
+          console.log('id', id);
+          debugger;
           if (res.data.status === 200) {
             this.insertLikeCoinButton(id);
             return;
@@ -60,11 +94,27 @@ class YoutubePlugin {
   }
 
   private insertLikeCoinButton(likerId: string) {
-    if (document.querySelector('.likecoin-button')) return;
+    if (document.querySelector('.likecoin-embed')) return;
     const ele = document.querySelector('#meta-contents') as HTMLElement;
     const buttonEle = document.createElement('div');
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-conatiner';
     buttonEle.className = likerId;
-    ele.append(buttonEle);
+    ele.appendChild(buttonContainer);
+    buttonContainer.appendChild(buttonEle);
+    if (likerId === 'likertemp') {
+      const tips = document.createElement('div');
+      tips.className = 'liker-tips';
+      const tipsTitle = document.createElement('div');
+      tipsTitle.className = 'liker-tips-title';
+      tipsTitle.innerText = '你的 Like 已被存儲在公共錢包，發郵件到 ckxxxx@like.co 驗證身份就能取回';
+      const tipsContent = document.createElement('div');
+      tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暂存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
+      tipsContent.className = 'liker-tips-content';
+      tips.appendChild(tipsTitle);
+      tips.appendChild(tipsContent);
+      buttonContainer.appendChild(tips);
+    }
     const likeButton = new LikeButton({ likerId, ref: buttonEle });
     likeButton.mount();
     this.insertStyle();

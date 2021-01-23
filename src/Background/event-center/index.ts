@@ -22,6 +22,7 @@ class EventCenter {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public sendPortMessage(nid: string, data: any) {
+    if (!this.portFromCs) return;
     this.portFromCs.postMessage({ nid, data });
   }
 

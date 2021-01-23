@@ -54,12 +54,8 @@ class LikeCoinButton {
               margin-right: 0;
               position: relative;
               width: 100%;
-              max-width: 485px;
-              max-height: 240px;
+              max-height: 187px;
               height: 100%;
-              margin-bottom: 24px;
-              padding-bottom: 16px;
-              border-bottom: 1px solid var(--yt-spec-10-percent-layer);
               }
               .likecoin-button > div {
               padding-top: 49.48454%;

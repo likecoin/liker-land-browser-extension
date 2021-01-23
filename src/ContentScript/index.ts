@@ -1,18 +1,64 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+/* eslint-disable no-case-declarations */
 /* eslint-disable class-methods-use-this */
 import { browser } from 'webextension-polyfill-ts';
-import { debounce } from 'lodash';
-// import content connector to get message
+// import { debounce } from 'lodash';
 import contentConnector from './event-center/content-connector';
+
+let hidden: any;
+let visibilityChange: any;
+if (typeof document.hidden !== 'undefined') {
+  // Opera 12.10 and Firefox 18 and later support
+  hidden = 'hidden';
+  visibilityChange = 'visibilitychange';
+} else if (typeof document.hidden !== 'undefined') {
+  hidden = 'msHidden';
+  visibilityChange = 'msvisibilitychange';
+  // @ts-ignore
+} else if (typeof document.webkitHidden !== 'undefined') {
+  hidden = 'webkitHidden';
+  visibilityChange = 'webkitvisibilitychange';
+}
 
 class PageInjector {
   constructor() {
     contentConnector.init();
-    const injectAll = debounce(this.injectInpage.bind(this), 1000);
+    const injectAll = this.injectInpage.bind(this);
+    // inject on load
+    window.onload = () => {
+      // @ts-ignore
+      if (document[hidden]) {
+        console.log('visibility');
+      } else {
+        injectAll();
+      }
+    };
+    // inject on message
     window.addEventListener('message', event => {
-      if (event.data.nid === 'pageLoad') {
+      // eslint-disable-next-line no-restricted-globals
+      if (event.data.nid === 'pageLoad' && event.data.data === location.href) {
+        console.log('loader');
         injectAll();
       }
     });
+
+    // inject on visibility
+    function handleVisibilityChange() {
+      // @ts-ignore
+      if (document[hidden]) {
+        console.log('visibility');
+      } else {
+        injectAll();
+      }
+    }
+    if (typeof document.addEventListener === 'undefined' || hidden === undefined) {
+      console.log(
+        'This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.'
+      );
+    } else {
+      // Handle page visibility change
+      document.addEventListener(visibilityChange, handleVisibilityChange, false);
+    }
   }
 
   injectInpage() {
