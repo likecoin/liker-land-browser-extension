@@ -5,8 +5,16 @@ import YoutubePlugin from './youtube.plugin';
 class Injector {
   public static injectAll() {
     if (location.hostname === 'www.youtube.com') {
-      const youtubePlugin = new YoutubePlugin();
-      youtubePlugin.inject();
+      if (document.querySelector('.button-conatiner')) {
+        const ele = document.querySelector('.button-conatiner') as HTMLElement;
+        if (!ele.parentElement) return;
+        ele.parentElement.removeChild(ele);
+      }
+      // init button in next loop;
+      setTimeout(() => {
+        const youtubePlugin = new YoutubePlugin();
+        youtubePlugin.inject();
+      }, 1000);
     }
 
     // inject youtube plugin

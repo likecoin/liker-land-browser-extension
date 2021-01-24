@@ -43,7 +43,7 @@ const Api = {
   },
   like: (content: { likerID: string; postURL: string }) => {
     return api
-      .post(`https://like.co/api/like/likebutton/${content.likerID}/like?referrer=${content.postURL}&cookie_support=0`)
+      .post(`/api/like/likebutton/${content.likerID}/like?referrer=${content.postURL}&cookie_support=0`)
       .then(res => {
         if (res.data === 'OK') {
           return res.data;
@@ -54,7 +54,7 @@ const Api = {
       });
   },
   getSoicalUrl: (content: { likerID: string }) => {
-    return soicalApi.get(`social/list/${content.likerID}`).then(res => {
+    return soicalApi.get(`/social/list/${content.likerID}`).then(res => {
       return res;
     });
   },

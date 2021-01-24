@@ -30,6 +30,9 @@ class EventCenter {
         if (this.actionMap.has(event.data.nid)) {
           const callBack = this.actionMap.get(event.data.nid);
           callBack(event.data);
+          setTimeout(() => {
+            this.actionMap.delete(event.data.nid);
+          }, 1000);
         }
       }
     });

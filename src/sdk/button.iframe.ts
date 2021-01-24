@@ -30,6 +30,7 @@ class LikeCoinButton {
     if (this.ref instanceof HTMLElement === false) {
       this.ref = document.querySelector(`${this.ref}`) as HTMLElement;
     }
+    if (document.querySelector('.likecoin-embed')) return;
     // set like user info
     this.ref.classList.add('likecoin-embed', 'likecoin-button');
     this.ref.setAttribute('data-liker-id', this.likerId);
@@ -37,10 +38,15 @@ class LikeCoinButton {
 
     this.href = encodeURIComponent(this.href);
     const src = `https://button.like.co/in/embed/${this.likerId}/button?referrer=${this.href}`;
-
     this.ref.textContent = '';
     this.ref.appendChild(document.createElement('div'));
     const iframe = document.createElement('iframe');
+    // iframe.onload = () => {
+    //   console.log('load');
+    // };
+    // iframe.onerror = err => {
+    //   console.log('err', err);
+    // };
     iframe.setAttribute('src', src);
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('scrolling', 'no');

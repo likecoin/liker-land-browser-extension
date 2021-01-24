@@ -43,6 +43,9 @@ class YoutubePlugin {
                 line-height: 1.5em;
                 font-weight: 600;
               }
+              .liker-tips-title a {
+                color: #28646e;
+              }
               .liker-tips-content{
                 color: #4a4a4a;
                 font-size: 12px;
@@ -56,7 +59,7 @@ class YoutubePlugin {
   }
 
   private onPageLoaded() {
-    if (!document.querySelector('#description')) {
+    if (!document.querySelector('#meta-contents')) {
       setTimeout(() => {
         this.onPageLoaded();
       }, 100);
@@ -68,8 +71,6 @@ class YoutubePlugin {
       } else {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         eventCenter.sendMessage('checkLikerId', id, (res: any) => {
-          console.log('id', id);
-          debugger;
           if (res.data.status === 200) {
             this.insertLikeCoinButton(id);
             return;
@@ -84,40 +85,54 @@ class YoutubePlugin {
   }
 
   private getLikeId() {
+    const likeCoTest = new RegExp('button.like.co');
     const desc = document.querySelector('#description');
     const nodes = desc?.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
-    if (nodes.length === 0) return;
+    let id = '';
+    if (!nodes || nodes?.length === 0) {
+      id = 'likertemp';
+      return;
+    }
     const node = nodes[nodes.length - 1];
     const url = node.innerText;
-    const id = url.split('/')[url.split('/').length - 1] || 'likecoin';
+    // eslint-disable-next-line no-nested-ternary
+    id = likeCoTest.test(url)
+      ? url.split('/')[url.split('/').length - 1].length > 0
+        ? url.split('/')[url.split('/').length - 1]
+        : 'likertemp'
+      : 'likertemp';
     return id;
   }
 
   private insertLikeCoinButton(likerId: string) {
-    if (document.querySelector('.likecoin-embed')) return;
-    const ele = document.querySelector('#meta-contents') as HTMLElement;
-    const buttonEle = document.createElement('div');
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'button-conatiner';
-    buttonEle.className = likerId;
-    ele.appendChild(buttonContainer);
-    buttonContainer.appendChild(buttonEle);
-    if (likerId === 'likertemp') {
-      const tips = document.createElement('div');
-      tips.className = 'liker-tips';
-      const tipsTitle = document.createElement('div');
-      tipsTitle.className = 'liker-tips-title';
-      tipsTitle.innerText = '你的 Like 已被存儲在公共錢包，發郵件到 ckxxxx@like.co 驗證身份就能取回';
-      const tipsContent = document.createElement('div');
-      tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暂存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
-      tipsContent.className = 'liker-tips-content';
-      tips.appendChild(tipsTitle);
-      tips.appendChild(tipsContent);
-      buttonContainer.appendChild(tips);
-    }
-    const likeButton = new LikeButton({ likerId, ref: buttonEle });
-    likeButton.mount();
-    this.insertStyle();
+    setTimeout(() => {
+      const ele = document.querySelector('#meta-contents') as HTMLElement;
+      if (ele.querySelector('.likecoin-embed')) {
+        return;
+      }
+      const buttonEle = document.createElement('div');
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'button-conatiner';
+      buttonEle.className = likerId;
+      ele.appendChild(buttonContainer);
+      buttonContainer.appendChild(buttonEle);
+      if (likerId === 'likertemp') {
+        const tips = document.createElement('div');
+        tips.className = 'liker-tips';
+        const tipsTitle = document.createElement('div');
+        tipsTitle.className = 'liker-tips-title';
+        tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，请到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 频道</discord> 驗證身份就能取回`;
+        const tipsContent = document.createElement('div');
+        tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暂存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
+        tipsContent.className = 'liker-tips-content';
+        tips.appendChild(tipsTitle);
+        tips.appendChild(tipsContent);
+        buttonContainer.appendChild(tips);
+      }
+      const likeButton = new LikeButton({ likerId, ref: buttonEle });
+      likeButton.mount();
+      this.insertStyle();
+    }, 0);
   }
 }
 export default YoutubePlugin;

@@ -27,9 +27,7 @@ class PageInjector {
     // inject on load
     window.onload = () => {
       // @ts-ignore
-      if (document[hidden]) {
-        console.log('visibility');
-      } else {
+      if (!document[hidden]) {
         injectAll();
       }
     };
@@ -37,7 +35,6 @@ class PageInjector {
     window.addEventListener('message', event => {
       // eslint-disable-next-line no-restricted-globals
       if (event.data.nid === 'pageLoad' && event.data.data === location.href) {
-        console.log('loader');
         injectAll();
       }
     });
@@ -45,15 +42,13 @@ class PageInjector {
     // inject on visibility
     function handleVisibilityChange() {
       // @ts-ignore
-      if (document[hidden]) {
-        console.log('visibility');
-      } else {
+      if (!document[hidden]) {
         injectAll();
       }
     }
     if (typeof document.addEventListener === 'undefined' || hidden === undefined) {
       console.log(
-        'This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.'
+        'This script requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.'
       );
     } else {
       // Handle page visibility change

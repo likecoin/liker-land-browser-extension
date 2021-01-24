@@ -12,8 +12,6 @@ async function getCurrentTabURL() {
   // TODO: handle canonical url and url qs cleaning
   const currentURL = currentTab && currentTab.url;
   if (!currentURL) {
-    console.error('no url');
-    console.error(currentTab);
     return '';
   }
   return currentURL;
