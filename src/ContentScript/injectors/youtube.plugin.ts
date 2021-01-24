@@ -7,6 +7,8 @@ import eventCenter from '../event-center/index';
 class YoutubePlugin {
   youtubeStyle!: HTMLElement;
 
+  failCounter!: number;
+
   insertStyle() {
     this.youtubeStyle = document.createElement('style');
     this.youtubeStyle.innerHTML = `
@@ -51,7 +53,9 @@ class YoutubePlugin {
                 font-size: 12px;
               }
           `;
+
     document.body.appendChild(this.youtubeStyle);
+    this.failCounter = 0;
   }
 
   inject() {
@@ -60,8 +64,10 @@ class YoutubePlugin {
 
   private onPageLoaded() {
     if (!document.querySelector('#meta-contents')) {
+      if (this.failCounter > 10) return;
       setTimeout(() => {
         this.onPageLoaded();
+        this.failCounter += 1;
       }, 100);
     } else {
       let id = this.getLikeId() || '';
