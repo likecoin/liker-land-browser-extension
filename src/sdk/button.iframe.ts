@@ -60,7 +60,7 @@ class LikeCoinButton {
               margin-right: 0;
               position: relative;
               width: 100%;
-              max-height: 187px;
+              max-width: 373px;
               height: 100%;
               }
               .likecoin-button > div {
