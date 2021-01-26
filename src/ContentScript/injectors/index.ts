@@ -5,8 +5,8 @@ import YoutubePlugin from './youtube.plugin';
 class Injector {
   public static injectAll() {
     if (location.hostname === 'www.youtube.com') {
-      if (document.querySelector('.button-conatiner')) {
-        const ele = document.querySelector('.button-conatiner') as HTMLElement;
+      if (document.querySelector('.button-container')) {
+        const ele = document.querySelector('.button-container') as HTMLElement;
         if (!ele.parentElement) return;
         ele.parentElement.removeChild(ele);
       }

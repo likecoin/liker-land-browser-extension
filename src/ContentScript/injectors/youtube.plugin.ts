@@ -16,9 +16,8 @@ class YoutubePlugin {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                // border-bottom: 1px solid var(--yt-spec-10-percent-layer);
               }
-              .button-conatiner {
+              .button-container {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-end;
@@ -30,13 +29,11 @@ class YoutubePlugin {
                 border-left: 1px solid var(--yt-spec-10-percent-layer);
                 padding-left: 14px;
               }
-              .button-conatiner a{
-              }
-              .liker-tips{
+              .liker-tips {
                 text-align: left;
                 z-index: 10;
               }
-              .liker-tips-title{
+              .liker-tips-title {
                 cursor: pointer;
                 -webkit-transition: opacity,color .2s ease-in-out;
                 transition: opacity,color .2s ease-in-out;
@@ -48,7 +45,7 @@ class YoutubePlugin {
               .liker-tips-title a {
                 color: #28646e;
               }
-              .liker-tips-content{
+              .liker-tips-content {
                 color: #4a4a4a;
                 font-size: 12px;
               }
@@ -118,7 +115,7 @@ class YoutubePlugin {
       }
       const buttonEle = document.createElement('div');
       const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'button-conatiner';
+      buttonContainer.className = 'button-container';
       buttonEle.className = likerId;
       ele.appendChild(buttonContainer);
       buttonContainer.appendChild(buttonEle);
@@ -127,9 +124,9 @@ class YoutubePlugin {
         tips.className = 'liker-tips';
         const tipsTitle = document.createElement('div');
         tipsTitle.className = 'liker-tips-title';
-        tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，请到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 频道</discord> 驗證身份就能取回`;
+        tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，請到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 頻道</a> 驗證身份就能取回`;
         const tipsContent = document.createElement('div');
-        tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暂存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
+        tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暫存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
         tipsContent.className = 'liker-tips-content';
         tips.appendChild(tipsTitle);
         tips.appendChild(tipsContent);

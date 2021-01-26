@@ -38,7 +38,7 @@ class EventCenter {
       });
     }
     if (e.type === 'social') {
-      Api.getSoicalUrl(e.data.content).then(res => {
+      Api.getSocialUrl(e.data.content).then(res => {
         this.sendPortMessage(e.data?.nid, res);
       });
     }

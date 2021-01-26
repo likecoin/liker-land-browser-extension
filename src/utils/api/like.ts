@@ -53,7 +53,7 @@ const Api = {
         return reason.response;
       });
   },
-  getSoicalUrl: (content: { likerID: string }) => {
+  getSocialUrl: (content: { likerID: string }) => {
     return soicalApi.get(`/social/list/${content.likerID}`).then(res => {
       return res;
     });
