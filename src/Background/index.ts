@@ -1,6 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 import * as api from '../utils/api/likerland';
 import { refreshBookmark, addBookmark, removeBookmark, isBookmarked } from './bookmarks';
+import eventCenter from './event-center/index';
 
 let isLoggedIn = false;
 
@@ -11,8 +12,6 @@ async function getCurrentTabURL() {
   // TODO: handle canonical url and url qs cleaning
   const currentURL = currentTab && currentTab.url;
   if (!currentURL) {
-    console.error('no url');
-    console.error(currentTab);
     return '';
   }
   return currentURL;
@@ -103,12 +102,16 @@ browser.runtime.onStartup.addListener(
   }
 );
 
-browser.tabs.onUpdated.addListener(() => {
+browser.tabs.onUpdated.addListener(async id => {
+  const currentTab = await browser.tabs.get(id);
+  const currentURL = currentTab && currentTab.url;
+  eventCenter.sendPortMessage('pageLoad', currentURL);
   updateBookmarkIcon();
 });
 browser.tabs.onActivated.addListener(async activeInfo => {
   const currentTab = await browser.tabs.get(activeInfo.tabId);
   const currentURL = currentTab && currentTab.url;
+  eventCenter.sendPortMessage('pageLoad', currentURL);
   updateBookmarkIcon(currentURL);
 });
 browser.windows.onFocusChanged.addListener(() => {
