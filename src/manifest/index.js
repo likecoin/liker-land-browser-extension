@@ -15,7 +15,7 @@ const manifestInput = {
   homepage_url: 'https://liker.land',
   short_name: 'Liker Land',
 
-  permissions: ['tabs', 'http://*/*', 'https://*/*', 'cookies'],
+  permissions: ['tabs', 'http://*/*', 'https://*/*'],
   content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
   '__chrome|firefox__author': 'Republic of Liker Land',
