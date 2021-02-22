@@ -8,7 +8,7 @@ class Injector {
       if (document.querySelector('.button-container')) {
         const ele = document.querySelector('.button-container') as HTMLElement;
         if (!ele.parentElement) return;
-        ele.parentElement.removeChild(ele);
+        // ele.parentElement.removeChild(ele);
       }
       // init button in next loop;
       setTimeout(() => {

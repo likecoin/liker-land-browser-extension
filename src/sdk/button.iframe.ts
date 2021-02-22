@@ -41,12 +41,7 @@ class LikeCoinButton {
     this.ref.textContent = '';
     this.ref.appendChild(document.createElement('div'));
     const iframe = document.createElement('iframe');
-    // iframe.onload = () => {
-    //   console.log('load');
-    // };
-    // iframe.onerror = err => {
-    //   console.log('err', err);
-    // };
+
     iframe.setAttribute('src', src);
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('scrolling', 'no');

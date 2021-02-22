@@ -126,7 +126,7 @@ class YoutubePlugin {
         tipsTitle.className = 'liker-tips-title';
         tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，請到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 頻道</a> 驗證身份就能取回`;
         const tipsContent = document.createElement('div');
-        tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暫存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
+        tipsContent.innerHTML = ` 你是這段影片的創作者嗎？我們根據已經觀看者的 Like 統計，已經將你的讚賞基金暫存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> Liker.Land <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
         tipsContent.className = 'liker-tips-content';
         tips.appendChild(tipsTitle);
         tips.appendChild(tipsContent);

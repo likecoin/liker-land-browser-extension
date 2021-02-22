@@ -5,7 +5,7 @@ Integrate [Liker Land](https://liker.land) functionality into your favorite brow
 ## Features
 
 - Bookmark any URL into Liker Land reading list
-- (TODO)
+- Auto inject Liker button for youtube videos. Copy and paste you Liker button URL into the video description field for this to work! Video without a Liker button URL will be injected with a temporary Liker button, which you can claim later.
 
 ## Browser Support
 
