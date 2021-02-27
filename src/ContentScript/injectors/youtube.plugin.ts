@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 // import { debounce } from 'lodash';
 import LikeButton from '../../sdk/button.iframe';
-import eventCenter from '../event-center/index';
 
 class YoutubePlugin {
   youtubeStyle!: HTMLElement;
@@ -61,7 +60,6 @@ class YoutubePlugin {
 
   private onPageLoaded() {
     if (!document.querySelector('#meta-contents')) {
-      if (this.failCounter > 10) return;
       setTimeout(() => {
         this.onPageLoaded();
         this.failCounter += 1;
@@ -72,17 +70,7 @@ class YoutubePlugin {
         id = 'likertemp';
         this.insertLikeCoinButton(id);
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        eventCenter.sendMessage('checkLikerId', id, (res: any) => {
-          if (res.data.status === 200) {
-            this.insertLikeCoinButton(id);
-            return;
-          }
-          if (res.data.name === 'Error') {
-            id = 'likertemp';
-            this.insertLikeCoinButton(id);
-          }
-        });
+        this.insertLikeCoinButton(id);
       }
     }
   }
@@ -108,34 +96,32 @@ class YoutubePlugin {
   }
 
   private insertLikeCoinButton(likerId: string) {
-    setTimeout(() => {
-      const ele = document.querySelector('#meta-contents') as HTMLElement;
-      if (ele.querySelector('.likecoin-embed')) {
-        return;
-      }
-      const buttonEle = document.createElement('div');
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'button-container';
-      buttonEle.className = likerId;
-      ele.appendChild(buttonContainer);
-      buttonContainer.appendChild(buttonEle);
-      if (likerId === 'likertemp') {
-        const tips = document.createElement('div');
-        tips.className = 'liker-tips';
-        const tipsTitle = document.createElement('div');
-        tipsTitle.className = 'liker-tips-title';
-        tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，請到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 頻道</a> 驗證身份就能取回`;
-        const tipsContent = document.createElement('div');
-        tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暫存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
-        tipsContent.className = 'liker-tips-content';
-        tips.appendChild(tipsTitle);
-        tips.appendChild(tipsContent);
-        buttonContainer.appendChild(tips);
-      }
-      const likeButton = new LikeButton({ likerId, ref: buttonEle });
-      likeButton.mount();
-      this.insertStyle();
-    }, 0);
+    const ele = document.querySelector('#meta-contents') as HTMLElement;
+    if (ele.querySelector('.likecoin-embed')) {
+      return;
+    }
+    const buttonEle = document.createElement('div');
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+    buttonEle.className = likerId;
+    ele.appendChild(buttonContainer);
+    buttonContainer.appendChild(buttonEle);
+    if (likerId === 'likertemp') {
+      const tips = document.createElement('div');
+      tips.className = 'liker-tips';
+      const tipsTitle = document.createElement('div');
+      tipsTitle.className = 'liker-tips-title';
+      tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，請到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 頻道</a> 驗證身份就能取回`;
+      const tipsContent = document.createElement('div');
+      tipsContent.innerHTML = ` 你是這段影片的創作者嗎？我們根據已經觀看者的 Like 統計，已經將你的讚賞基金暫存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> Liker.Land <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
+      tipsContent.className = 'liker-tips-content';
+      tips.appendChild(tipsTitle);
+      tips.appendChild(tipsContent);
+      buttonContainer.appendChild(tips);
+    }
+    const likeButton = new LikeButton({ likerId, ref: buttonEle });
+    likeButton.mount();
+    this.insertStyle();
   }
 }
 export default YoutubePlugin;
