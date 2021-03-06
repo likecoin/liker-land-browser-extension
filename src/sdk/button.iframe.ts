@@ -19,6 +19,7 @@ class LikeCoinButton {
   likeStyleElement!: HTMLElement;
 
   constructor(config: LikeButtonConfig) {
+    if (!config.ref) throw new Error('Missing config.likerId');
     if (!config || !config.likerId) throw new Error('Missing config.likerId');
     this.likerId = config.likerId;
     this.ref = config.ref;

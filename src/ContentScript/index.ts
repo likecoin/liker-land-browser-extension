@@ -31,9 +31,12 @@ class PageInjector {
   }
 
   injectInpage() {
-    const inpage = document.createElement('script');
-    inpage.src = browser.runtime.getURL('js/inpage.bundle.js');
-    document.body.appendChild(inpage);
+    // eslint-disable-next-line no-restricted-globals
+    if (location.hostname === 'www.youtube.com') {
+      const inpage = document.createElement('script');
+      inpage.src = browser.runtime.getURL('js/inpage.bundle.js');
+      document.body.appendChild(inpage);
+    }
   }
 }
 

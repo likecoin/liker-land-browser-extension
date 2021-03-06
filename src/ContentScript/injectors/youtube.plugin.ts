@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-unused-vars */
 // import { debounce } from 'lodash';
-import LikeButton from '../../sdk/button.iframe';
+import renderComponent from './render';
 
 class YoutubePlugin {
   youtubeStyle!: HTMLElement;
@@ -16,7 +16,7 @@ class YoutubePlugin {
                 flex-direction: row;
                 justify-content: space-between;
               }
-              .button-container {
+              .button-container{
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-end;
@@ -24,29 +24,21 @@ class YoutubePlugin {
                 height: 100%;
                 width: 47%;
                 margin-left: 20px;
-                text-align:left;
+                text-align: left;
                 border-left: 1px solid var(--yt-spec-10-percent-layer);
                 padding-left: 14px;
+                background: #eaf4f6;
+                border: 1px solid #eee;
+                padding: 30px;
+                box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+                border-radius: 22px;
               }
-              .liker-tips {
-                text-align: left;
-                z-index: 10;
-              }
-              .liker-tips-title {
+              li:hover{
                 cursor: pointer;
-                -webkit-transition: opacity,color .2s ease-in-out;
-                transition: opacity,color .2s ease-in-out;
-                color: #28646e;
-                font-size: 16px;
-                line-height: 1.5em;
-                font-weight: 600;
+                text-decoration: underline;
               }
-              .liker-tips-title a {
-                color: #28646e;
-              }
-              .liker-tips-content {
-                color: #4a4a4a;
-                font-size: 12px;
+              .likecoin-button > div {
+                padding-top: 0 !important; 
               }
           `;
 
@@ -97,30 +89,14 @@ class YoutubePlugin {
 
   private insertLikeCoinButton(likerId: string) {
     const ele = document.querySelector('#meta-contents') as HTMLElement;
-    if (ele.querySelector('.likecoin-embed')) {
+    if (ele.querySelector('.button-container')) {
       return;
     }
-    const buttonEle = document.createElement('div');
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
-    buttonEle.className = likerId;
     ele.appendChild(buttonContainer);
-    buttonContainer.appendChild(buttonEle);
-    if (likerId === 'likertemp') {
-      const tips = document.createElement('div');
-      tips.className = 'liker-tips';
-      const tipsTitle = document.createElement('div');
-      tipsTitle.className = 'liker-tips-title';
-      tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，請到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 頻道</a> 驗證身份就能取回`;
-      const tipsContent = document.createElement('div');
-      tipsContent.innerHTML = ` 你是這段影片的創作者嗎？我們根據已經觀看者的 Like 統計，已經將你的讚賞基金暫存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> Liker.Land <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
-      tipsContent.className = 'liker-tips-content';
-      tips.appendChild(tipsTitle);
-      tips.appendChild(tipsContent);
-      buttonContainer.appendChild(tips);
-    }
-    const likeButton = new LikeButton({ likerId, ref: buttonEle });
-    likeButton.mount();
+
+    renderComponent(likerId, buttonContainer);
     this.insertStyle();
   }
 }
