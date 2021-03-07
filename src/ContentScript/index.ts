@@ -13,13 +13,41 @@ class PageInjector {
     this.recursiveAddButton();
   }
 
+  callback = (mutationsList: MutationRecord[]) => {
+    // Use traditional 'for loops' for IE 11
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        // @ts-ignore
+        const timeOut: number = setTimeout(() => {
+          this.recursiveAddButton();
+        }, 1000);
+        this.recursiveQueue.push(timeOut);
+      } else if (mutation.type === 'attributes') {
+        // @ts-ignore
+        const timeOut: number = setTimeout(() => {
+          this.recursiveAddButton();
+        }, 1000);
+        this.recursiveQueue.push(timeOut);
+      }
+    }
+  };
+
   recursiveAddButton() {
     if (document.querySelector('.button-container')) {
+      const ele = document.querySelector('.button-container') as HTMLElement;
       // @ts-ignore
-      const timeOut: number = setTimeout(() => {
-        this.recursiveAddButton();
-      }, 1000);
-      this.recursiveQueue.push(timeOut);
+      if (ele.parentElement?.children.length < 2) {
+        const timeOut = setTimeout(() => {
+          this.recursiveAddButton();
+        }, 1000);
+        // @ts-ignore
+        this.recursiveQueue.push(timeOut);
+      }
+      const observer = new MutationObserver(this.callback);
+
+      const config = { attributes: true, childList: true, subtree: true };
+
+      observer.observe(document.querySelector('.button-container') as HTMLElement, config);
     } else {
       this.injectInpage();
       const timeOut = setTimeout(() => {
