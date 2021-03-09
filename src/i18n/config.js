@@ -1,23 +1,23 @@
 const translation = {
   en: {
     translation: {
-      title: 'How do get rewards directly from your like?',
-      step1: 'Register your Liker Id https://like.co/in/register?language=en',
-      step2: 'Add https://button.like.co/yourlikerid to the end of your videos description',
+      title: 'Let YouTubers get rewarded by likes!',
+      step1: 'Register a Liker ID: https://like.co/in/register?language=en',
+      step2: 'Add the line "https://button.like.co/yourLikerID" at the end of the video description',
     },
   },
   'zh-CN': {
     translation: {
-      title: 'YouTuber 如何化赞为赏获得收益？',
-      step1: '注册你的 Liker ID https://like.co/in/register?language=zh',
-      step2: '在影片描述最后加上 https://button.like.co/yourlikerid',
+      title: '按赞让 YouTuber 获得回报！',
+      step1: '注册 Liker ID： https://like.co/in/register?language=zh',
+      step2: '在影片描述最后加上 https://button.like.co/yourLikerID',
     },
   },
   'zh-TW': {
     translation: {
-      title: 'YouTuber 如何化讚為賞獲得回報？',
-      step1: '註冊 Liker ID  https://like.co/in/register?language=zh',
-      step2: '在影片描述最后加上 https://button.like.co/yourlikerid',
+      title: '按讚讓 YouTuber 獲得回報！',
+      step1: '註冊 Liker ID： https://like.co/in/register?language=zh',
+      step2: '在影片描述最後加上 https://button.like.co/yourLikerID',
     },
   },
 };
