@@ -7,10 +7,21 @@ import contentConnector from './event-center/content-connector';
 class PageInjector {
   recursiveQueue: number[] = [];
 
+  recursiveNumber = 0;
+
   constructor() {
     contentConnector.init();
     this.recursiveQueue = [];
-    this.recursiveAddButton();
+    this.recursiveNumber = 0;
+
+    window.addEventListener('message', event => {
+      // eslint-disable-next-line no-restricted-globals
+      if (event.data.nid === 'pageLoad') {
+        this.injectInpage().then(() => {
+          this.observer();
+        });
+      }
+    });
   }
 
   callback = (mutationsList: MutationRecord[]) => {
@@ -19,26 +30,20 @@ class PageInjector {
       if (mutation.type === 'childList') {
         // @ts-ignore
         const timeOut: number = setTimeout(() => {
-          this.recursiveAddButton();
-        }, 1000);
-        this.recursiveQueue.push(timeOut);
-      } else if (mutation.type === 'attributes') {
-        // @ts-ignore
-        const timeOut: number = setTimeout(() => {
-          this.recursiveAddButton();
+          this.injectInpage();
         }, 1000);
         this.recursiveQueue.push(timeOut);
       }
     }
   };
 
-  recursiveAddButton() {
+  observer() {
     if (document.querySelector('.button-container')) {
-      const ele = document.querySelector('.button-container') as HTMLElement;
+      const ele = document.querySelector('#meta-contents') as HTMLElement;
       // @ts-ignore
-      if (ele.parentElement?.children.length < 2) {
+      if (ele?.children.length < 2) {
         const timeOut = setTimeout(() => {
-          this.recursiveAddButton();
+          this.injectInpage();
         }, 1000);
         // @ts-ignore
         this.recursiveQueue.push(timeOut);
@@ -47,11 +52,11 @@ class PageInjector {
 
       const config = { attributes: true, childList: true, subtree: true };
 
-      observer.observe(document.querySelector('.button-container') as HTMLElement, config);
+      observer.observe(ele, config);
     } else {
-      this.injectInpage();
       const timeOut = setTimeout(() => {
-        this.recursiveAddButton();
+        this.recursiveNumber += 1;
+        this.observer();
       }, 1000);
       // @ts-ignore
       this.recursiveQueue.push(timeOut);
@@ -59,12 +64,18 @@ class PageInjector {
   }
 
   injectInpage() {
+    return new Promise<boolean>(resolve => {
+      // eslint-disable-next-line no-restricted-globals
+      if (location.hostname === 'www.youtube.com') {
+        const inpage = document.createElement('script');
+        inpage.src = browser.runtime.getURL('js/inpage.bundle.js');
+        document.body.appendChild(inpage);
+        inpage.onload = () => {
+          resolve(true);
+        };
+      }
+    });
     // eslint-disable-next-line no-restricted-globals
-    if (location.hostname === 'www.youtube.com') {
-      const inpage = document.createElement('script');
-      inpage.src = browser.runtime.getURL('js/inpage.bundle.js');
-      document.body.appendChild(inpage);
-    }
   }
 }
 
