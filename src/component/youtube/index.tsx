@@ -89,7 +89,7 @@ function YoutubeButton(props: Props) {
   return (
     <div style={buttonContainer}>
       <div className="liker-button" style={likerButton} />
-      {likerId === 'likertemp' ? (
+      {likerId === 'likertemp' && (
         <div className="liker-tips" style={likerTips}>
           <div className="liker-tips-title" style={likerTipsTitle}>
             {t('YOUTUBE_TITLE')}
@@ -121,7 +121,7 @@ function YoutubeButton(props: Props) {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
