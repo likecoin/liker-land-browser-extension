@@ -54,6 +54,7 @@ class PageInjector {
 
       observer.observe(ele, config);
     } else {
+      if (this.recursiveNumber > 20) return;
       const timeOut = setTimeout(() => {
         this.recursiveNumber += 1;
         this.observer();

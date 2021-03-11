@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-unused-vars */
 // import { debounce } from 'lodash';
-import renderComponent from './render';
+import { renderYouTubeButton } from './render';
 
 class YoutubePlugin {
   youtubeStyle!: HTMLElement;
@@ -51,6 +51,7 @@ class YoutubePlugin {
   }
 
   private onPageLoaded() {
+    if (this.failCounter > 20) return;
     if (!document.querySelector('#meta-contents')) {
       setTimeout(() => {
         this.onPageLoaded();
@@ -96,7 +97,7 @@ class YoutubePlugin {
     buttonContainer.className = 'button-container';
     ele.appendChild(buttonContainer);
 
-    renderComponent(likerId, buttonContainer);
+    renderYouTubeButton(likerId, buttonContainer);
     this.insertStyle();
   }
 }

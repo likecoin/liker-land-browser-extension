@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import YoutubeButton from '../../component/youtube/index';
 
-function renderComponent(likerId: string, ele: HTMLElement) {
-  ReactDOM.render(
-    <React.StrictMode>
-      <YoutubeButton likerId={likerId} />
-    </React.StrictMode>,
-    ele
-  );
+function renderComponent(element: React.ReactElement, container: HTMLElement) {
+  ReactDOM.render(<React.StrictMode>{element}</React.StrictMode>, container);
 }
-export default renderComponent;
+
+export function renderYouTubeButton(likerId: string, container: HTMLElement) {
+  renderComponent(<YoutubeButton likerId={likerId} />, container);
+}

@@ -27,8 +27,6 @@ i18n
   });
 i18n.changeLanguage();
 
-console.log(i18n);
-
 const buttonContainer: CSS.Properties = {
   display: 'flex',
   flexDirection: 'column',
@@ -87,41 +85,43 @@ function YoutubeButton(props: Props) {
       ref: document.querySelector('.liker-button') as HTMLElement,
     });
     likerButtonInstance.mount();
-  });
+  }, [likerId]);
   return (
     <div style={buttonContainer}>
       <div className="liker-button" style={likerButton} />
-      <div className="liker-tips" style={likerTips}>
-        <div className="liker-tips-title" style={likerTipsTitle}>
-          {t('title')}
-        </div>
-        <div className="liker-tips-content" style={likerTipsContent}>
-          <div>
-            <ul style={likerTipsContentList}>
-              <li style={likerTipsContentListItem} onClick={register}>
-                <img
-                  style={likerTipsContentListItemImg}
-                  alt="img"
-                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlPSIjMTZBMTIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiI+CiAgICAgICAgPHBhdGggZD0iTTcgMTJMMy45NTkgOC45NTlNNyAxMmw1LjUtNy41Ii8+CiAgICA8L2c+Cjwvc3ZnPgo="
-                  role="presentation"
-                  className="bullet"
-                />
-                {t('step1')}
-              </li>
-              <li style={likerTipsContentListItem}>
-                <img
-                  style={likerTipsContentListItemImg}
-                  alt="img"
-                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlPSIjMTZBMTIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiI+CiAgICAgICAgPHBhdGggZD0iTTcgMTJMMy45NTkgOC45NTlNNyAxMmw1LjUtNy41Ii8+CiAgICA8L2c+Cjwvc3ZnPgo="
-                  role="presentation"
-                  className="bullet"
-                />
-                {t('step2')}
-              </li>
-            </ul>
+      {likerId === 'likertemp' ? (
+        <div className="liker-tips" style={likerTips}>
+          <div className="liker-tips-title" style={likerTipsTitle}>
+            {t('YOUTUBE_TITLE')}
+          </div>
+          <div className="liker-tips-content" style={likerTipsContent}>
+            <div>
+              <ul style={likerTipsContentList}>
+                <li style={likerTipsContentListItem} onClick={register}>
+                  <img
+                    style={likerTipsContentListItemImg}
+                    alt="img"
+                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlPSIjMTZBMTIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiI+CiAgICAgICAgPHBhdGggZD0iTTcgMTJMMy45NTkgOC45NTlNNyAxMmw1LjUtNy41Ii8+CiAgICA8L2c+Cjwvc3ZnPgo="
+                    role="presentation"
+                    className="bullet"
+                  />
+                  {t('YOUTUBE_STEP1')}
+                </li>
+                <li style={likerTipsContentListItem}>
+                  <img
+                    style={likerTipsContentListItemImg}
+                    alt="img"
+                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlPSIjMTZBMTIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiI+CiAgICAgICAgPHBhdGggZD0iTTcgMTJMMy45NTkgOC45NTlNNyAxMmw1LjUtNy41Ii8+CiAgICA8L2c+Cjwvc3ZnPgo="
+                    role="presentation"
+                    className="bullet"
+                  />
+                  {t('YOUTUBE_STEP2')}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }
