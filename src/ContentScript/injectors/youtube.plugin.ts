@@ -6,8 +6,6 @@ import { renderYouTubeButton } from './render';
 class YoutubePlugin {
   youtubeStyle!: HTMLElement;
 
-  failCounter!: number;
-
   insertStyle() {
     this.youtubeStyle = document.createElement('style');
     this.youtubeStyle.innerHTML = `
@@ -22,14 +20,14 @@ class YoutubePlugin {
                 justify-content: flex-end;
                 align-items: flex-end;
                 height: 100%;
-                width: 47%;
+                width: 40%;
                 margin-left: 20px;
                 text-align: left;
                 border-left: 1px solid var(--yt-spec-10-percent-layer);
                 padding-left: 14px;
                 background: #eaf4f6;
                 border: 1px solid #eee;
-                padding: 30px;
+                padding: 15px;
                 box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
                 border-radius: 22px;
               }
@@ -43,7 +41,6 @@ class YoutubePlugin {
           `;
 
     document.body.appendChild(this.youtubeStyle);
-    this.failCounter = 0;
   }
 
   inject() {
@@ -51,20 +48,12 @@ class YoutubePlugin {
   }
 
   private onPageLoaded() {
-    if (this.failCounter > 20) return;
-    if (!document.querySelector('#meta-contents')) {
-      setTimeout(() => {
-        this.onPageLoaded();
-        this.failCounter += 1;
-      }, 100);
+    let id = this.getLikeId() || '';
+    if (id.length === 0) {
+      id = 'likertemp';
+      this.insertLikeCoinButton(id);
     } else {
-      let id = this.getLikeId() || '';
-      if (id.length === 0) {
-        id = 'likertemp';
-        this.insertLikeCoinButton(id);
-      } else {
-        this.insertLikeCoinButton(id);
-      }
+      this.insertLikeCoinButton(id);
     }
   }
 

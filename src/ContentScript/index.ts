@@ -54,7 +54,10 @@ class PageInjector {
 
       observer.observe(ele, config);
     } else {
-      if (this.recursiveNumber > 20) return;
+      if (this.recursiveNumber > 20) {
+        this.clearRecursiveQueue();
+        return;
+      }
       const timeOut = setTimeout(() => {
         this.recursiveNumber += 1;
         this.observer();
@@ -62,6 +65,12 @@ class PageInjector {
       // @ts-ignore
       this.recursiveQueue.push(timeOut);
     }
+  }
+
+  clearRecursiveQueue() {
+    this.recursiveQueue.forEach(item => {
+      clearTimeout(item);
+    });
   }
 
   injectInpage() {
