@@ -19,15 +19,15 @@ class YoutubePlugin {
                 flex-direction: column;
                 justify-content: flex-end;
                 align-items: flex-end;
-                height: 100%;
                 width: 40%;
+                height: 314px;
                 margin-left: 20px;
                 text-align: left;
                 border-left: 1px solid var(--yt-spec-10-percent-layer);
                 padding-left: 14px;
                 background: #eaf4f6;
                 border: 1px solid #eee;
-                padding: 15px;
+                padding: 30px;
                 box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
                 border-radius: 22px;
               }
@@ -37,6 +37,43 @@ class YoutubePlugin {
               }
               .likecoin-button > div {
                 padding-top: 0 !important; 
+              }
+              @media (max-width:1400px){
+                #meta-contents {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                }
+                .button-container{
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-end;
+                  align-items: flex-end;
+                  width: 700px;
+                  margin-left: 20px;
+                  text-align: left;
+                  border-left: 1px solid var(--yt-spec-10-percent-layer);
+                  padding-left: 14px;
+                  background: #eaf4f6;
+                  border: 1px solid #eee;
+                  padding: 15px;
+                  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+                  border-radius: 22px;
+                  height: 181px;
+                }
+                .button-container > div{
+                  display: flex;
+                  flex-direction: row !important;
+                }
+                .liker-tips{
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                }
+                .liker-tips-content{
+                  margin: 0 !important;
+                }
               }
           `;
 
