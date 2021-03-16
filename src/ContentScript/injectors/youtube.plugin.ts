@@ -16,12 +16,16 @@ class YoutubePlugin {
                 padding-top:40px;
               }
               .button-container{
+                max-height: 346px;
+                position: relative;
+                width: 100%;
+                max-width: 485px;
+                margin: 0 auto;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-end;
                 align-items: flex-end;
                 width: 40%;
-                height: 326px;
                 box-sizing: border-box;
                 margin-left: 20px;
                 text-align: left;
@@ -37,10 +41,7 @@ class YoutubePlugin {
                 cursor: pointer;
                 text-decoration: underline;
               }
-              .likecoin-button > div {
-                padding-top: 0 !important; 
-              }
-              @media (max-width:1400px){
+              @media (max-width:1600px){
                 #meta-contents {
                   display: flex;
                   flex-direction: column;
@@ -51,6 +52,7 @@ class YoutubePlugin {
                   flex-direction: row;
                   justify-content: flex-end;
                   align-items: flex-end;
+                  max-width: 700px;
                   width: 700px;
                   margin-left: 20px;
                   text-align: left;

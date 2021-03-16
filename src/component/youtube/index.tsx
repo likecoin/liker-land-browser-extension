@@ -35,8 +35,10 @@ const buttonContainer: CSS.Properties = {
 };
 
 const likerButton: CSS.Properties = {
-  height: '200px',
-  // overflow: 'hidden',
+  position: 'relative',
+  width: '100%',
+  maxWidth: '485px',
+  margin: '0 auto',
 };
 
 const likerTips: CSS.Properties = {
