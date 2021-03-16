@@ -13,6 +13,7 @@ class YoutubePlugin {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+                padding-top:40px;
               }
               .button-container{
                 display: flex;
@@ -20,7 +21,8 @@ class YoutubePlugin {
                 justify-content: flex-end;
                 align-items: flex-end;
                 width: 40%;
-                height: 314px;
+                height: 326px;
+                box-sizing: border-box;
                 margin-left: 20px;
                 text-align: left;
                 border-left: 1px solid var(--yt-spec-10-percent-layer);
