@@ -16,23 +16,19 @@ class YoutubePlugin {
                 padding-top:40px;
               }
               .button-container{
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                align-items: flex-end;
                 width: 605px;
                 margin-left: 20px;
-                text-align: left;
-                border-left: 1px solid var(--yt-spec-10-percent-layer);
+                padding: 11px;
                 padding-left: 14px;
                 background: #eaf4f6;
                 border: 1px solid #eee;
-                padding: 11px;
-                box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+                border-left: 1px solid #eee;
                 border-radius: 22px;
+                box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
                 box-sizing: content-box;
+                text-align: left;
               }
-              li:hover{
+              .tips-list:hover{
                 cursor: pointer;
                 text-decoration: underline;
               }
@@ -56,15 +52,7 @@ class YoutubePlugin {
                   align-items: flex-end;
                   width: 700px;
                   margin-left: 20px;
-                  text-align: left;
-                  border-left: 1px solid var(--yt-spec-10-percent-layer);
-                  padding-left: 14px;
-                  background: #eaf4f6;
-                  border: 1px solid #eee;
                   padding: 15px;
-                  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
-                  border-radius: 22px;
-                  height: 181px;
                 }
                 .button-container > div{
                   display: flex;

@@ -34,12 +34,7 @@ const buttonContainer: CSS.Properties = {
   height: '100%',
 };
 
-const likerButton: CSS.Properties = {
-  // overflow: 'hidden',
-};
-
 const likerTips: CSS.Properties = {
-  // maxWidth: '480px',
   paddingLeft: '38px',
 };
 
@@ -52,6 +47,7 @@ const likerTipsTitle: CSS.Properties = {
 
 const likerTipsContent: CSS.Properties = {
   marginTop: '10pt',
+  marginBottom: '10pt',
 };
 
 const likerTipsContentList: CSS.Properties = {
@@ -87,7 +83,7 @@ function YoutubeButton(props: Props) {
   }, [likerId]);
   return (
     <div style={buttonContainer}>
-      <div className="liker-button" style={likerButton} />
+      <div className="liker-button" />
       {likerId === 'likertemp' && (
         <div className="liker-tips" style={likerTips}>
           <div className="liker-tips-title" style={likerTipsTitle}>
@@ -96,7 +92,7 @@ function YoutubeButton(props: Props) {
           <div className="liker-tips-content" style={likerTipsContent}>
             <div>
               <ul style={likerTipsContentList}>
-                <li style={likerTipsContentListItem} onClick={register}>
+                <li className="tips-list" style={likerTipsContentListItem} onClick={register}>
                   <img
                     style={likerTipsContentListItemImg}
                     alt="img"
@@ -106,7 +102,7 @@ function YoutubeButton(props: Props) {
                   />
                   {t('YOUTUBE_STEP1')}
                 </li>
-                <li style={likerTipsContentListItem}>
+                <li className="tips-list" style={likerTipsContentListItem}>
                   <img
                     style={likerTipsContentListItemImg}
                     alt="img"
