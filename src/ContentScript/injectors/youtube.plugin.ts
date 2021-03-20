@@ -1,13 +1,10 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-unused-vars */
 // import { debounce } from 'lodash';
-import LikeButton from '../../sdk/button.iframe';
-import eventCenter from '../event-center/index';
+import { renderYouTubeButton } from './render';
 
 class YoutubePlugin {
   youtubeStyle!: HTMLElement;
-
-  failCounter!: number;
 
   insertStyle() {
     this.youtubeStyle = document.createElement('style');
@@ -16,43 +13,64 @@ class YoutubePlugin {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+                padding-top:40px;
               }
-              .button-container {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                align-items: flex-end;
-                height: 100%;
-                width: 47%;
+              .button-container{
+                width: 605px;
                 margin-left: 20px;
-                text-align:left;
-                border-left: 1px solid var(--yt-spec-10-percent-layer);
+                padding: 11px;
                 padding-left: 14px;
-              }
-              .liker-tips {
+                background: #eaf4f6;
+                border: 1px solid #eee;
+                border-left: 1px solid #eee;
+                border-radius: 22px;
+                box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+                box-sizing: content-box;
                 text-align: left;
-                z-index: 10;
               }
-              .liker-tips-title {
+              .tips-list:hover{
                 cursor: pointer;
-                -webkit-transition: opacity,color .2s ease-in-out;
-                transition: opacity,color .2s ease-in-out;
-                color: #28646e;
-                font-size: 16px;
-                line-height: 1.5em;
-                font-weight: 600;
+                text-decoration: underline;
               }
-              .liker-tips-title a {
-                color: #28646e;
+              .liker-button{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
               }
-              .liker-tips-content {
-                color: #4a4a4a;
-                font-size: 12px;
+              @media (max-width:1400px){
+                #meta-contents {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                }
+                .button-container{
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-end;
+                  align-items: flex-end;
+                  width: 700px;
+                  margin-left: 20px;
+                  padding: 15px;
+                }
+                .button-container > div{
+                  display: flex;
+                  flex-direction: row !important;
+                }
+                .liker-tips{
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                }
+                .liker-tips-content{
+                  margin: 0 !important;
+                }
               }
           `;
 
     document.body.appendChild(this.youtubeStyle);
-    this.failCounter = 0;
   }
 
   inject() {
@@ -60,30 +78,12 @@ class YoutubePlugin {
   }
 
   private onPageLoaded() {
-    if (!document.querySelector('#meta-contents')) {
-      if (this.failCounter > 10) return;
-      setTimeout(() => {
-        this.onPageLoaded();
-        this.failCounter += 1;
-      }, 100);
+    let id = this.getLikeId() || '';
+    if (id.length === 0) {
+      id = 'likertemp';
+      this.insertLikeCoinButton(id);
     } else {
-      let id = this.getLikeId() || '';
-      if (id.length === 0) {
-        id = 'likertemp';
-        this.insertLikeCoinButton(id);
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        eventCenter.sendMessage('checkLikerId', id, (res: any) => {
-          if (res.data.status === 200) {
-            this.insertLikeCoinButton(id);
-            return;
-          }
-          if (res.data.name === 'Error') {
-            id = 'likertemp';
-            this.insertLikeCoinButton(id);
-          }
-        });
-      }
+      this.insertLikeCoinButton(id);
     }
   }
 
@@ -108,34 +108,16 @@ class YoutubePlugin {
   }
 
   private insertLikeCoinButton(likerId: string) {
-    setTimeout(() => {
-      const ele = document.querySelector('#meta-contents') as HTMLElement;
-      if (ele.querySelector('.likecoin-embed')) {
-        return;
-      }
-      const buttonEle = document.createElement('div');
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'button-container';
-      buttonEle.className = likerId;
-      ele.appendChild(buttonContainer);
-      buttonContainer.appendChild(buttonEle);
-      if (likerId === 'likertemp') {
-        const tips = document.createElement('div');
-        tips.className = 'liker-tips';
-        const tipsTitle = document.createElement('div');
-        tipsTitle.className = 'liker-tips-title';
-        tipsTitle.innerHTML = `你的 Like 已被存儲在公共錢包，請到 <a href="https://discord.com/invite/W4DQ6peZZZ">Discord 頻道</a> 驗證身份就能取回`;
-        const tipsContent = document.createElement('div');
-        tipsContent.innerHTML = ` 為什麼這是妳專屬的贊助基金？我們實際根據已經觀看者的 Like 統計，已經將妳的讚賞基金暫存，驗證這是你的內容即可領取，快來 <a style="color: #28646e;" href="https://liker.land/getapp?"> LikerLand <a/> 建立錢包，馬上收到來自粉絲的贊助！`;
-        tipsContent.className = 'liker-tips-content';
-        tips.appendChild(tipsTitle);
-        tips.appendChild(tipsContent);
-        buttonContainer.appendChild(tips);
-      }
-      const likeButton = new LikeButton({ likerId, ref: buttonEle });
-      likeButton.mount();
-      this.insertStyle();
-    }, 0);
+    const ele = document.querySelector('#meta-contents') as HTMLElement;
+    if (ele.querySelector('.button-container')) {
+      return;
+    }
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+    ele.appendChild(buttonContainer);
+
+    renderYouTubeButton(likerId, buttonContainer);
+    this.insertStyle();
   }
 }
 export default YoutubePlugin;

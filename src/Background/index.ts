@@ -111,7 +111,7 @@ browser.tabs.onUpdated.addListener(async id => {
 browser.tabs.onActivated.addListener(async activeInfo => {
   const currentTab = await browser.tabs.get(activeInfo.tabId);
   const currentURL = currentTab && currentTab.url;
-  eventCenter.sendPortMessage('pageLoad', currentURL);
+  eventCenter.sendPortMessage('activated', currentURL);
   updateBookmarkIcon(currentURL);
 });
 browser.windows.onFocusChanged.addListener(() => {

@@ -19,6 +19,7 @@ class LikeCoinButton {
   likeStyleElement!: HTMLElement;
 
   constructor(config: LikeButtonConfig) {
+    if (!config.ref) throw new Error('Missing config.ref');
     if (!config || !config.likerId) throw new Error('Missing config.likerId');
     this.likerId = config.likerId;
     this.ref = config.ref;
@@ -41,12 +42,7 @@ class LikeCoinButton {
     this.ref.textContent = '';
     this.ref.appendChild(document.createElement('div'));
     const iframe = document.createElement('iframe');
-    // iframe.onload = () => {
-    //   console.log('load');
-    // };
-    // iframe.onerror = err => {
-    //   console.log('err', err);
-    // };
+
     iframe.setAttribute('src', src);
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('scrolling', 'no');
