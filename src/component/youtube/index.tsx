@@ -84,7 +84,8 @@ function YoutubeButton(props: Props) {
   const { t } = useTranslation();
 
   const register = () => {
-    window.open(`https://like.co/in/register`, '_blank');
+    const locale = t('LIKE_CO_LOCALE_KEY') || '';
+    window.open(`https://like.co/in/register?utm_source=browser_extension&locale=${locale}`, '_blank');
   };
   useEffect(() => {
     const likerButtonInstance = new LikerButton({
