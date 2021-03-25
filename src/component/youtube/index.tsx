@@ -67,6 +67,18 @@ interface Props {
   likerId: string;
 }
 
+function getCanonicalVideoURL() {
+  if (!window || !URL) return '';
+  const href = window && window.location.href;
+  const url = new URL(href);
+  // @ts-ignore
+  const keys: string[] = Array.from(url.searchParams.keys());
+  keys.filter(k => k !== 'v').forEach(k => {
+    url.searchParams.delete(k);
+  });
+  return url.toString();
+}
+
 function YoutubeButton(props: Props) {
   const { likerId } = props;
   const { t } = useTranslation();
@@ -77,6 +89,7 @@ function YoutubeButton(props: Props) {
   useEffect(() => {
     const likerButtonInstance = new LikerButton({
       likerId,
+      href: getCanonicalVideoURL(),
       ref: document.querySelector('.liker-button') as HTMLElement,
     });
     likerButtonInstance.mount();
