@@ -75,7 +75,7 @@ function getCanonicalVideoURL() {
   const keys: string[] = Array.from(url.searchParams.keys());
   keys.filter(k => k !== 'v').forEach(k => {
     url.searchParams.delete(k);
-  })
+  });
   return url.toString();
 }
 
