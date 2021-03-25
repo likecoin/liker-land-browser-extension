@@ -34,5 +34,5 @@ export function logout() {
 }
 
 export const getOAuthLoginAPI = () => {
-  return `${LIKER_LAND_API_BASE}/users/login`;
+  return `${LIKER_LAND_API_BASE}/users/login?utm_source=browser_extension`;
 };
