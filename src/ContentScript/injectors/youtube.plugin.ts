@@ -79,10 +79,7 @@ class YoutubePlugin {
 
   private onPageLoaded() {
     let id = this.getLikeId() || '';
-    if (id.length === 0) {
-      id = 'likertemp';
-      this.insertLikeCoinButton(id);
-    } else {
+    if (id.length > 0) {
       this.insertLikeCoinButton(id);
     }
   }
@@ -93,18 +90,14 @@ class YoutubePlugin {
     const nodes = desc?.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
     let id = '';
     if (!nodes || nodes?.length === 0) {
-      id = 'likertemp';
-      return;
+      return '';
     }
     const node = nodes[nodes.length - 1];
     const url = node.innerText;
-    // eslint-disable-next-line no-nested-ternary
-    id = likeCoTest.test(url)
-      ? url.split('/')[url.split('/').length - 1].length > 0
-        ? url.split('/')[url.split('/').length - 1]
-        : 'likertemp'
-      : 'likertemp';
-    return id;
+    if (likeCoTest.test(url)) {
+      id = url.split('/')[url.split('/').length - 1]
+    }
+    return 'id';
   }
 
   private insertLikeCoinButton(likerId: string) {
