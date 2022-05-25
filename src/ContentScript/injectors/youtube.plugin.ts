@@ -79,7 +79,7 @@ class YoutubePlugin {
 
   private onPageLoaded() {
     const id = this.getLikeId() || '';
-    if (id.length > 0) {
+    if (id) {
       this.insertLikeCoinButton(id);
     }
   }
@@ -98,7 +98,14 @@ class YoutubePlugin {
   }
 
   private insertLikeCoinButton(likerId: string) {
-    const ele = document.querySelector('#meta-contents') as HTMLElement;
+    const descs = document.querySelectorAll('#description');
+    let ele = Array.from(descs).find(d => {
+      return d.innerHTML.includes('button.like.co');
+    });
+    if (!ele) return;
+    while (ele.lastElementChild) {
+      ele = ele.lastElementChild;
+    }
     if (ele.querySelector('.button-container')) {
       return;
     }
