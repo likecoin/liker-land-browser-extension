@@ -78,26 +78,23 @@ class YoutubePlugin {
   }
 
   private onPageLoaded() {
-    let id = this.getLikeId() || '';
+    const id = this.getLikeId() || '';
     if (id.length > 0) {
       this.insertLikeCoinButton(id);
     }
   }
 
   private getLikeId() {
-    const likeCoTest = new RegExp('button.like.co');
-    const desc = document.querySelector('#description');
-    const nodes = desc?.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
-    let id = '';
-    if (!nodes || nodes?.length === 0) {
-      return '';
-    }
-    const node = nodes[nodes.length - 1];
-    const url = node.innerText;
-    if (likeCoTest.test(url)) {
-      id = url.split('/')[url.split('/').length - 1]
-    }
-    return 'id';
+    const likeCoTest = new RegExp('https://button.like.co/([a-z0-9-_]{7,20})');
+    const descs = document.querySelectorAll('#description');
+    const desc = Array.from(descs).find(d => {
+      return d.innerHTML.includes('button.like.co');
+    });
+    if (!desc) return '';
+    const res = desc.innerHTML.match(likeCoTest);
+    if (!res) return '';
+    const [, likerId] = res;
+    return likerId;
   }
 
   private insertLikeCoinButton(likerId: string) {
