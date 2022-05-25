@@ -85,7 +85,7 @@ class YoutubePlugin {
   }
 
   private getLikeId() {
-    const likeCoTest = new RegExp('https://button.like.co/([a-z0-9-_]{7,20})');
+    const likeCoTest = new RegExp(/https:\/\/button\.like\.co\/([a-z0-9-_]{7,20})/);
     const descs = document.querySelectorAll('#description');
     const desc = Array.from(descs).find(d => {
       return d.innerHTML.includes('button.like.co');
