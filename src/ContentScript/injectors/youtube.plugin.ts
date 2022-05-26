@@ -111,7 +111,7 @@ class YoutubePlugin {
     const btn = ele.querySelector('.like-button-container');
     if (btn) return;
     const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'button-container';
+    buttonContainer.className = 'like-button-container';
     ele.appendChild(buttonContainer);
 
     renderYouTubeButton(likerId, buttonContainer);
