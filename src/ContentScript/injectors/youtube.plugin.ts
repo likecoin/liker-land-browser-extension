@@ -9,13 +9,7 @@ class YoutubePlugin {
   insertStyle() {
     this.youtubeStyle = document.createElement('style');
     this.youtubeStyle.innerHTML = `
-              #meta-contents {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding-top:40px;
-              }
-              .button-container{
+              .like-button-container{
                 width: 605px;
                 margin-left: 20px;
                 padding: 11px;
@@ -40,12 +34,7 @@ class YoutubePlugin {
                 height: 100%;
               }
               @media (max-width:1400px){
-                #meta-contents {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: space-between;
-                }
-                .button-container{
+                .like-button-container{
                   display: flex;
                   flex-direction: row;
                   justify-content: flex-end;
@@ -54,7 +43,7 @@ class YoutubePlugin {
                   margin-left: 20px;
                   padding: 15px;
                 }
-                .button-container > div{
+                .like-button-container > div{
                   display: flex;
                   flex-direction: row !important;
                 }
@@ -107,7 +96,7 @@ class YoutubePlugin {
 
   private insertLikeCoinButton(likerId: string) {
     if (!likerId) {
-      const b = document.querySelector('.button-container');
+      const b = document.querySelector('.like-button-container');
       if (b) b.remove();
       return;
     }
@@ -119,7 +108,7 @@ class YoutubePlugin {
     while (ele.lastElementChild) {
       ele = ele.lastElementChild;
     }
-    const btn = ele.querySelector('.button-container');
+    const btn = ele.querySelector('.like-button-container');
     if (btn) return;
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
