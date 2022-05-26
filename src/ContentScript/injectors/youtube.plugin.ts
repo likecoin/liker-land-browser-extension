@@ -9,13 +9,7 @@ class YoutubePlugin {
   insertStyle() {
     this.youtubeStyle = document.createElement('style');
     this.youtubeStyle.innerHTML = `
-              #meta-contents {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding-top:40px;
-              }
-              .button-container{
+              .like-button-container{
                 width: 605px;
                 margin-left: 20px;
                 padding: 11px;
@@ -40,12 +34,7 @@ class YoutubePlugin {
                 height: 100%;
               }
               @media (max-width:1400px){
-                #meta-contents {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: space-between;
-                }
-                .button-container{
+                .like-button-container{
                   display: flex;
                   flex-direction: row;
                   justify-content: flex-end;
@@ -54,7 +43,7 @@ class YoutubePlugin {
                   margin-left: 20px;
                   padding: 15px;
                 }
-                .button-container > div{
+                .like-button-container > div{
                   display: flex;
                   flex-direction: row !important;
                 }
@@ -75,45 +64,54 @@ class YoutubePlugin {
 
   inject() {
     this.onPageLoaded();
+    window.addEventListener('pushstate', () => {
+      setTimeout(() => {
+        this.onPageLoaded();
+      }, 3000);
+    });
+    window.addEventListener('popstate', () => {
+      setTimeout(() => {
+        this.onPageLoaded();
+      }, 3000);
+    });
   }
 
   private onPageLoaded() {
-    let id = this.getLikeId() || '';
-    if (id.length === 0) {
-      id = 'likertemp';
-      this.insertLikeCoinButton(id);
-    } else {
-      this.insertLikeCoinButton(id);
-    }
+    const id = this.getLikeId() || '';
+    this.insertLikeCoinButton(id);
   }
 
   private getLikeId() {
-    const likeCoTest = new RegExp('button.like.co');
-    const desc = document.querySelector('#description');
-    const nodes = desc?.querySelectorAll('a') as NodeListOf<HTMLAnchorElement>;
-    let id = '';
-    if (!nodes || nodes?.length === 0) {
-      id = 'likertemp';
-      return;
-    }
-    const node = nodes[nodes.length - 1];
-    const url = node.innerText;
-    // eslint-disable-next-line no-nested-ternary
-    id = likeCoTest.test(url)
-      ? url.split('/')[url.split('/').length - 1].length > 0
-        ? url.split('/')[url.split('/').length - 1]
-        : 'likertemp'
-      : 'likertemp';
-    return id;
+    const likeCoTest = /https:\/\/button\.like\.co\/([a-z0-9-_]{7,20})/;
+    const descs = document.querySelectorAll('#description');
+    const desc = Array.from(descs).find(d => {
+      return d.innerHTML.includes('button.like.co');
+    });
+    if (!desc) return '';
+    const res = desc.innerHTML.match(likeCoTest);
+    if (!res) return '';
+    const [, likerId] = res;
+    return likerId;
   }
 
   private insertLikeCoinButton(likerId: string) {
-    const ele = document.querySelector('#meta-contents') as HTMLElement;
-    if (ele.querySelector('.button-container')) {
+    if (!likerId) {
+      const b = document.querySelector('.like-button-container');
+      if (b) b.remove();
       return;
     }
+    const descs = document.querySelectorAll('#description');
+    let ele = Array.from(descs).find(d => {
+      return d.innerHTML.includes('button.like.co');
+    });
+    if (!ele) return;
+    while (ele.lastElementChild) {
+      ele = ele.lastElementChild;
+    }
+    const btn = ele.querySelector('.like-button-container');
+    if (btn) return;
     const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'button-container';
+    buttonContainer.className = 'like-button-container';
     ele.appendChild(buttonContainer);
 
     renderYouTubeButton(likerId, buttonContainer);

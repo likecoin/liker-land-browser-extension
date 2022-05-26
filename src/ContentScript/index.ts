@@ -38,7 +38,7 @@ class PageInjector {
   };
 
   observer() {
-    if (document.querySelector('.button-container')) {
+    if (document.querySelector('.like-button-container')) {
       const ele = document.querySelector('#meta-contents') as HTMLElement;
       // @ts-ignore
       if (ele?.children.length < 2) {

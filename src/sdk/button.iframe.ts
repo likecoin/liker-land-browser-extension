@@ -31,7 +31,7 @@ class LikeCoinButton {
     if (this.ref instanceof HTMLElement === false) {
       this.ref = document.querySelector(`${this.ref}`) as HTMLElement;
     }
-    if (document.querySelector('.likecoin-embed')) return;
+    if (this.ref.querySelector('.likecoin-embed')) return;
     // set like user info
     this.ref.classList.add('likecoin-embed', 'likecoin-button');
     this.ref.setAttribute('data-liker-id', this.likerId);
