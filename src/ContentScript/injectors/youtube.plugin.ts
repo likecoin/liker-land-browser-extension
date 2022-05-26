@@ -75,13 +75,21 @@ class YoutubePlugin {
 
   inject() {
     this.onPageLoaded();
+    window.addEventListener('pushstate', () => {
+      setTimeout(() => {
+        this.onPageLoaded();
+      }, 3000);
+    });
+    window.addEventListener('popstate', () => {
+      setTimeout(() => {
+        this.onPageLoaded();
+      }, 3000);
+    });
   }
 
   private onPageLoaded() {
     const id = this.getLikeId() || '';
-    if (id) {
-      this.insertLikeCoinButton(id);
-    }
+    this.insertLikeCoinButton(id);
   }
 
   private getLikeId() {
@@ -98,6 +106,11 @@ class YoutubePlugin {
   }
 
   private insertLikeCoinButton(likerId: string) {
+    if (!likerId) {
+      const b = document.querySelector('.button-container');
+      if (b) b.remove();
+      return;
+    }
     const descs = document.querySelectorAll('#description');
     let ele = Array.from(descs).find(d => {
       return d.innerHTML.includes('button.like.co');
@@ -106,9 +119,8 @@ class YoutubePlugin {
     while (ele.lastElementChild) {
       ele = ele.lastElementChild;
     }
-    if (ele.querySelector('.button-container')) {
-      return;
-    }
+    const btn = ele.querySelector('.button-container');
+    if (btn) return;
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
     ele.appendChild(buttonContainer);
