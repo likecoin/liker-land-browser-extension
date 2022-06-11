@@ -5,15 +5,8 @@ import { browser } from 'webextension-polyfill-ts';
 import contentConnector from './event-center/content-connector';
 
 class PageInjector {
-  recursiveQueue: number[] = [];
-
-  recursiveNumber = 0;
-
   constructor() {
     contentConnector.init();
-    this.recursiveQueue = [];
-    this.recursiveNumber = 0;
-
     window.addEventListener('message', event => {
       // eslint-disable-next-line no-restricted-globals
       if (event.data.nid === 'pageLoad') {
@@ -21,12 +14,6 @@ class PageInjector {
           this.injectInpage();
         }, 3000);
       }
-    });
-  }
-
-  clearRecursiveQueue() {
-    this.recursiveQueue.forEach(item => {
-      clearTimeout(item);
     });
   }
 
