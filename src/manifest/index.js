@@ -16,7 +16,7 @@ const manifestInput = {
   short_name: 'Liker Land',
 
   permissions: ['tabs', 'http://*/*', 'https://*/*'],
-  content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  content_security_policy: "script-src 'self'; object-src 'self'",
 
   '__chrome|firefox__author': 'Republic of Liker Land',
   __opera__developer: {
