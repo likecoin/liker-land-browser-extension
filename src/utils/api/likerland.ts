@@ -13,8 +13,13 @@ export const getAppURL = () => {
 };
 
 export async function refreshBookmarkList(): Promise<string[]> {
-  const { data } = await api.get('/reader/bookmark');
-  return data?.bookmarks || [];
+  try {
+    const { data } = await api.get('/reader/bookmark');
+    return data?.bookmarks || [];
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }
 
 export function addBookmark(url: string) {
